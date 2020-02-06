@@ -1,0 +1,98 @@
+$("#c-1").click(function(){
+    $("#c-1").addClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-2").click(function(){
+    $("#c-2").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-3").click(function(){
+    $("#c-3").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-4").click(function(){
+    $("#c-4").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-5").click(function(){
+    $("#c-5").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-6").click(function(){
+    $("#c-6").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+});
+
+
+$("#c-1").hover(function(){
+    $("#c-1").addClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-2").hover(function(){
+    $("#c-2").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-3").hover(function(){
+    $("#c-3").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-4").hover(function(){
+    $("#c-4").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-5").hover(function(){
+    $("#c-5").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+    $("#c-6").removeClass("active-country");
+});
+$("#c-6").hover(function(){
+    $("#c-6").addClass("active-country");
+    $("#c-1").removeClass("active-country");
+    $("#c-3").removeClass("active-country");
+    $("#c-4").removeClass("active-country");
+    $("#c-5").removeClass("active-country");
+    $("#c-2").removeClass("active-country");
+});
