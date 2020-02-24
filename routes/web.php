@@ -36,5 +36,11 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::get('/contactos','MediacamController@contactos')->name('mediacam.contacts');
         Route::post('/envio','MediacamController@contactar')->name('mediacam.contacto');
         Route::post('pantalla','PantallaController@changescren')->name('pantallas.change');
+        Route::post('/vistas/store', 'VisualizacionesController@store')->name('vistas.store');
+        Route::get('/vistas/{date}/{country}', 'VisualizacionesController@index')->name('vistas.index');
+        Route::get('/vistas/day/{date}/{country}', 'VisualizacionesController@graficoDay')->name('vistas.day');
+        Route::get('/vistas/month/{date}/{country}', 'VisualizacionesController@graficomonth')->name('vistas.month');
+        Route::get('/vistas/year/{date}/{country}', 'VisualizacionesController@graficoYear')->name('vistas.year');
+        Route::get('/apigrafico', 'VisualizacionesController@apigrafico')->name('vistas.apiindex');
     });
 });

@@ -18,10 +18,13 @@ class CreatePantallasTable extends Migration
             $table->string('name',255)->unique();
             $table->string('link',500)->unique();
             $table->string('image',255);
-            $table->string('location',255);
-            $table->string('status',25);
+            $table->string('location',255)->nullable();
+            $table->string('status',25)->default('disponible');
+            $table->string('acronimo',50)->nullable();
             $table->unsignedBigInteger('country_id');
             $table->timestamps();
+
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 

@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->unsignedBigInteger('country_id');
-            $table->string('status',25)->nullable();
-            $table->date('fecha_fin');
+            $table->string('status',25)->default('activo');
+            $table->date('fecha_fin')->nullable();
             $table->timestamps();
 
             $table->foreign('country_id')->references('id')->on('countries');

@@ -1,0 +1,128 @@
+[
+   {
+      "id":37,
+      "key":"list_clients",
+      "table_name":"users",
+      "created_at":null,
+      "updated_at":null
+   },
+   {
+      "id":38,
+      "key":"store_clients",
+      "table_name":"users",
+      "created_at":null,
+      "updated_at":null
+   },
+   {
+      "id":40,
+      "key":"browse_pantalla_clientes",
+      "table_name":"pantalla_clientes",
+      "created_at":"2020-01-26 13:17:27",
+      "updated_at":"2020-01-26 13:17:27"
+   },
+   {
+      "id":41,
+      "key":"read_pantalla_clientes",
+      "table_name":"pantalla_clientes",
+      "created_at":"2020-01-26 13:17:27",
+      "updated_at":"2020-01-26 13:17:27"
+   },
+   {
+      "id":42,
+      "key":"edit_pantalla_clientes",
+      "table_name":"pantalla_clientes",
+      "created_at":"2020-01-26 13:17:27",
+      "updated_at":"2020-01-26 13:17:27"
+   },
+   {
+      "id":43,
+      "key":"add_pantalla_clientes",
+      "table_name":"pantalla_clientes",
+      "created_at":"2020-01-26 13:17:27",
+      "updated_at":"2020-01-26 13:17:27"
+   },
+   {
+      "id":44,
+      "key":"delete_pantalla_clientes",
+      "table_name":"pantalla_clientes",
+      "created_at":"2020-01-26 13:17:27",
+      "updated_at":"2020-01-26 13:17:27"
+   },
+   {
+      "id":45,
+      "key":"browse_permissions",
+      "table_name":"permissions",
+      "created_at":"2020-01-26 21:30:18",
+      "updated_at":"2020-01-26 21:30:18"
+   },
+   {
+      "id":46,
+      "key":"read_permissions",
+      "table_name":"permissions",
+      "created_at":"2020-01-26 21:30:18",
+      "updated_at":"2020-01-26 21:30:18"
+   },
+   {
+      "id":47,
+      "key":"edit_permissions",
+      "table_name":"permissions",
+      "created_at":"2020-01-26 21:30:18",
+      "updated_at":"2020-01-26 21:30:18"
+   },
+   {
+      "id":48,
+      "key":"add_permissions",
+      "table_name":"permissions",
+      "created_at":"2020-01-26 21:30:18",
+      "updated_at":"2020-01-26 21:30:18"
+   },
+   {
+      "id":49,
+      "key":"delete_permissions",
+      "table_name":"permissions",
+      "created_at":"2020-01-26 21:30:18",
+      "updated_at":"2020-01-26 21:30:18"
+   },
+   {
+      "id":50,
+      "key":"browse_pantallas",
+      "table_name":"pantallas",
+      "created_at":"2020-02-20 02:14:38",
+      "updated_at":"2020-02-20 02:14:38"
+   },
+   {
+      "id":51,
+      "key":"read_pantallas",
+      "table_name":"pantallas",
+      "created_at":"2020-02-20 02:14:38",
+      "updated_at":"2020-02-20 02:14:38"
+   },
+   {
+      "id":52,
+      "key":"edit_pantallas",
+      "table_name":"pantallas",
+      "created_at":"2020-02-20 02:14:39",
+      "updated_at":"2020-02-20 02:14:39"
+   },
+   {
+      "id":53,
+      "key":"add_pantallas",
+      "table_name":"pantallas",
+      "created_at":"2020-02-20 02:14:39",
+      "updated_at":"2020-02-20 02:14:39"
+   },
+   {
+      "id":54,
+      "key":"delete_pantallas",
+      "table_name":"pantallas",
+      "created_at":"2020-02-20 02:14:39",
+      "updated_at":"2020-02-20 02:14:39"
+   },
+   {
+      "id":55,
+      "key":"view_cameras",
+      "table_name":"pantallas",
+      "created_at":"2020-02-24 00:00:00",
+      "updated_at":null
+   }
+]
