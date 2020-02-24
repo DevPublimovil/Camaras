@@ -35,6 +35,16 @@
             </a>
           </li>
           @endif
+          @if(Auth::user()->hasPermission('view_graficos'))
+          <li class="nav-item">
+            <a href="{{route('vistas.index',['hoy',1])}}" class="nav-link">
+              <i class="nav-icon fa fa-line-chart" aria-hidden="true"></i>
+              <p>
+                Graficos
+              </p>
+            </a>
+          </li>
+          @endif
           <li class="nav-item">
             <a href="{{route('mediacam.profile')}}" class="nav-link">
               <i class="nav-icon fa fa-user-circle"></i>

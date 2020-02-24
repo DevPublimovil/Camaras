@@ -47,7 +47,7 @@ class PantallaController extends Controller
                     ->get();
                 return view('pantallas.index', compact('user','paises','pantallas'));
                 //verifica si el usuario es trafico
-           }else if($user->role_id == 4){
+           }else if($user->role_id == 4 || $user->role_id == 5){
                $pantallas = Pantalla::where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
                return view('pantallas.index', compact('pantallas','user'));
                //verifica si el usuario es administrador

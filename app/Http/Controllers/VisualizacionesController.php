@@ -7,13 +7,15 @@ use App\Visualizacion;
 use \Carbon\Carbon as Fecha;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Auth;
 
 class VisualizacionesController extends Controller
 {
 
     public function index($date, $country){
 
-        $masvistas = DB::table('visualizacions')
+        if(Auth::user()->hasPermission('view_graficos')){
+            $masvistas = DB::table('visualizacions')
             ->select(DB::raw('count(*) as vistas, pantallas.name as pantalla, pantallas.acronimo'))
             ->join('pantallas','pantallas.id','visualizacions.pantalla_id')
             ->whereDate('visualizacions.created_at',Fecha::now())
@@ -23,18 +25,19 @@ class VisualizacionesController extends Controller
             ->take(10)
             ->get();
 
-        $menosvistas = DB::table('visualizacions')
-                ->select(DB::raw('count(*) as vistas, pantallas.name as pantalla, pantallas.acronimo'))
-                ->join('pantallas','pantallas.id','visualizacions.pantalla_id')
-                ->whereDate('visualizacions.created_at',Fecha::now())
-                ->where('pantallas.country_id',$country)
-                ->groupBy('pantalla','pantallas.acronimo')
-                ->orderBy('vistas','ASC')
-                ->take(10)
-                ->get();
+            $menosvistas = DB::table('visualizacions')
+                    ->select(DB::raw('count(*) as vistas, pantallas.name as pantalla, pantallas.acronimo'))
+                    ->join('pantallas','pantallas.id','visualizacions.pantalla_id')
+                    ->whereDate('visualizacions.created_at',Fecha::now())
+                    ->where('pantallas.country_id',$country)
+                    ->groupBy('pantalla','pantallas.acronimo')
+                    ->orderBy('vistas','ASC')
+                    ->take(10)
+                    ->get();
 
-        $fecha = 'Dia: ' . Fecha::now()->locale('es')->isoFormat('LL');
-        return view('graficos.index', compact('masvistas','menosvistas','fecha','date','country'));
+            $fecha = 'Dia: ' . Fecha::now()->locale('es')->isoFormat('LL');
+            return view('graficos.index', compact('masvistas','menosvistas','fecha','date','country'));
+        }
     }
     
 

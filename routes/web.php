@@ -24,6 +24,7 @@ Route::get('/', function () {
     }
 })->name('inicio');
 
+Auth::routes(['register' => false]);
 
 Route::post('logout','MediacamController@logout')->name('mediacam.logout');
 
