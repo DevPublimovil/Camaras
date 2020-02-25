@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="text-center"><img src="{{asset('images/bg-dox.png')}}" width="50%" alt=""></div>
+            <div class="text-center"><img src="{{asset('images/logopublimovil.png')}}" width="50%" alt="" class="mb-4"></div>
             <div class="card">
                 <div class="card-header">{{ __('Reestablecer contraseña') }}</div>
 
@@ -19,7 +19,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Correo') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
