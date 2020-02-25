@@ -47,6 +47,13 @@
 
         methods:{
             show(enlace,tipo){
+                let vm = this
+                axios.post('/mediacam/vistas/store/',{
+                    user: this.user.id,
+                    mipantalla:pantalla
+                }).then(({data})=>{
+                    
+                });
                 if(tipo == 1){
                     this.$modal.show('modal-camara',{iframe:enlace});
                 }else{

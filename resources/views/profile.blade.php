@@ -6,7 +6,7 @@
            <div class="col-lg-8 col-md-8 col-xs-12 col-12">
                <div class="card shadow shadow-lg">
                    <div class="card-header">
-                    <h6>  @if(Auth::user()->role_id == 3) <strong>Cliente:</strong> @elseif(Auth::user()->role_id == 4) <strong>Trafico:</strong> @endif {{$user->name}}</h6> 
+                    <h6>  @if(Auth::user()->role_id == 3) <strong>Cliente:</strong> @elseif(Auth::user()->role_id == 5) <strong>Vendedor: </strong> @elseif(Auth::user()->role_id == 4) <strong>Trafico:</strong> @endif {{$user->name}}</h6> 
                    </div>
                    <div class="card-body px-4">
                        <div class="row">
