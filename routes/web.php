@@ -12,7 +12,6 @@ use App\Country;
 */
 
 Route::get('/', function () {
-    $countries = Country::orderBy('name','ASC')->get();
     if(Auth::check()==true && Auth::user()->status == 'activo'){
         if(Auth::user()->role_id == 1){
             return redirect()->route('voyager.dashboard');
