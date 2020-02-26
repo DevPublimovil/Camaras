@@ -54,11 +54,7 @@
                 }).then(({data})=>{
                     
                 });
-                if(tipo == 1){
-                    this.$modal.show('modal-camara',{iframe:enlace});
-                }else{
-                    window.open(enlace, '_blank');
-                }
+                this.$modal.show('modal-camara',{iframe:enlace});
             },
         },
     }

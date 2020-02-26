@@ -168,7 +168,7 @@ class PantallaController extends Controller
                 'pantallas' => $pantallas
             ]);
             //verifico si el usuario es administrador
-        }else if(Auth::user()->role_id == 1){
+        }else if(Auth::user()->role_id == 1 || $user->role_id == 6){
             // lista las pantallas del pais
             $pantallas = Pantalla::select('pantallas.*')
                 ->where('pantallas.country_id',$pais->id)
@@ -179,7 +179,5 @@ class PantallaController extends Controller
                 'pantallas' => $pantallas
             ]);
         }
-
-        
     }
 }
