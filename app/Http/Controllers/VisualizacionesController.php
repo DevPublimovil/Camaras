@@ -107,9 +107,6 @@ class VisualizacionesController extends Controller
     }
 
     public function store(Request $request){
-        $cliente = User::find($request->user);
-
-        if($cliente->role_id == 3){
             $user = $request->user;
             $pantalla = $request->mipantalla;
 
@@ -117,8 +114,6 @@ class VisualizacionesController extends Controller
                 'user_id' => $user,
                 'pantalla_id' => $pantalla,
             ]);
-        }
-        
 
         return response()->json('Se guardó con éxito la visualizacón');
     }

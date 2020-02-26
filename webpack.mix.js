@@ -14,7 +14,6 @@ Mix.listen('loading-rules', function (rules) {
   }
 });
 
-mix.browserSync(process.env.APP_URL || 'http://localhost:8000');
 
 /*
  |--------------------------------------------------------------------------

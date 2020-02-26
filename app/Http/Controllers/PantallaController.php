@@ -51,9 +51,9 @@ class PantallaController extends Controller
                $pantallas = Pantalla::where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
                return view('pantallas.index', compact('pantallas','user'));
                //verifica si el usuario es administrador
-           }else if($user->role_id == 1){
+           }else if($user->role_id == 1 || $user->role_id == 6){
                 $paises = Country::orderBy('name','ASC')->get();
-
+                
                 $pantallas = Pantalla::select('pantallas.*')
                     ->where('pantallas.country_id',$user->country->id)
                     ->get();
