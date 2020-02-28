@@ -31,6 +31,12 @@ class MediacamController extends Controller
             $tipo = "cliente";
         }else if(Auth::user()->role_id == 4){
             $tipo = "Trafico";
+        }else if(Auth::user()->role_id == 5){
+            $tipo = "Vendedor";
+        }else if(Auth::user()->role_id == 6){
+            $tipo = "Vendedor Regional";
+        }else if(Auth::user()->role_id == 1){
+            $tipo = "Admin";
         }
         //detalles del mensaje
         $usuario = $request->nombre;
