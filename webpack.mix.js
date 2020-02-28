@@ -3,6 +3,7 @@ const tailwindcss = require('tailwindcss');
 const path        = require('path');
 const _           = require('lodash');
 
+
 Mix.listen('loading-rules', function (rules) {
   var index = _.findIndex(rules, (rule) => {
     return /\(\?\!font\)\./.test(rule.test.toString());
@@ -63,4 +64,6 @@ mix.js('resources/js/app.js', 'public/js')
   } else {
     mix.sourceMaps();
   }
+  
+
   

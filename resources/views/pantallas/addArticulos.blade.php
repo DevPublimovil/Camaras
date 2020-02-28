@@ -34,7 +34,7 @@
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn btn-sm btn-danger pull-right ml-1"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
                                             </form>
-                                            <button class="btn btn-sm btn-info pull-right" v-on:click="ver('{{$item->link}}','{{$item->country_id}}')"><i class="fa fa-video-camera" aria-hidden="true"></i> Ver</button>
+                                            <button class="btn btn-sm btn-info pull-right" v-on:click="ver('{{$item->id}}','{{$item->link}}')"><i class="fa fa-video-camera" aria-hidden="true"></i> Ver</button>
                                         </div>
                                     </div>
                                 </li>

@@ -47,13 +47,12 @@ Vue.component('client-component', require('./components/ClientComponent.vue').de
 
 const app = new Vue({
     el: '#app',
+    data:{
+        rango:1
+    },
     methods:{
-        ver(enlace,tipo){
-            if(tipo == 1){
-                this.$modal.show('modal-camara',{iframe:enlace});
-            }else{
-                window.open(enlace, '_blank');
-            }
+        ver(pantalla,enlace){
+            this.$modal.show('modal-camara',{iframe:enlace,id:pantalla});
         },
     }
 });

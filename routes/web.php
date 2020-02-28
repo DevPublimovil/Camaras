@@ -27,6 +27,7 @@ Auth::routes(['register' => false]);
 
 Route::post('logout','MediacamController@logout')->name('mediacam.logout');
 
+
 Route::group(['prefix' => 'mediacam'], function () {
     Voyager::routes();
     Route::group(['middleware' => ['auth']], function(){
@@ -42,5 +43,6 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::get('/vistas/month/{date}/{country}', 'VisualizacionesController@graficomonth')->name('vistas.month');
         Route::get('/vistas/year/{date}/{country}', 'VisualizacionesController@graficoYear')->name('vistas.year');
         Route::get('/apigrafico', 'VisualizacionesController@apigrafico')->name('vistas.apiindex');
+        Route::get('download/{id}', 'PantallaController@imagedownload')->name('pantalla.download');
     });
 });

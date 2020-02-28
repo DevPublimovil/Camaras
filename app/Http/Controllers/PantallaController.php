@@ -107,7 +107,17 @@ class PantallaController extends Controller
      */
     public function show($id)
     {
-        //
+        $username = 'root';
+        $password = 'med10s';
+        $url = 'http://168.243.53.106/jpg/1/image.jpg';
+        
+        $context = stream_context_create(array(
+            'http' => array(
+                'header'  => "Authorization: Basic " . base64_encode("$username:$password")
+            )
+        ));
+        $data = file_get_contents($url, false, $context);
+        
     }
 
     /**
@@ -179,5 +189,32 @@ class PantallaController extends Controller
                 'pantallas' => $pantallas
             ]);
         }
+    }
+
+    public function imagedownload($id){
+        $pantalla = Pantalla::find($id);
+        $cadena = explode('//',$pantalla->link);
+        $username = 'root';
+        if($pantalla->country_id == 1){
+            $password = 'med10s';
+        }else if($pantalla->country_id == 2){
+            $password = 'cuat3';
+        }else if($pantalla->country_id == 4){
+            $password == 'H0ndur4s';
+        }
+        //$url  = 'http://168.243.52.198//mjpg/1/video.mjpg';
+        $url = 'http://'.$cadena[1].'/jpg/1/image.jpg';
+        
+        $context = stream_context_create(array(
+            'http' => array(
+                'header'  => "Authorization: Basic " . base64_encode("$username:$password")
+            )
+        ));
+        $data = file_get_contents($url);
+        $image = base64_encode($data);
+        $imageName = $pantalla->name;
+        \File::put(storage_path(). '/app/public/' . $imageName, $data);
+        $miuri = storage_path(). '/app/public/' . $imageName;
+        return response()->download($miuri)->deleteFileAfterSend();
     }
 }
