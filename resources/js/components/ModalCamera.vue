@@ -1,8 +1,8 @@
 <template>
     <div  class="modal-camera">
-        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="100%" @before-open="beforeOpen">
+        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
-            <img class="img-fluid" width="100%" height="100%" :src="enlace"  id="mimodal" >
+            <img width="100%" height="100%" :src="enlace"  id="mimodal" >
         </modal>
     </div>
 </template>
