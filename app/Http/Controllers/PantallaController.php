@@ -200,7 +200,9 @@ class PantallaController extends Controller
         }else if($pantalla->country_id == 2){
             $password = 'cuat3';
         }else if($pantalla->country_id == 4){
-            $password == 'H0ndur4s';
+            $password = 'H0ndur4s';
+        }else if($pantalla->country_id == 6){
+            $password = 'Publ1Mov1l@2020';
         }
         //$url  = 'http://168.243.52.198//mjpg/1/video.mjpg';
         $url = 'http://'.$cadena[1].'/jpg/1/image.jpg';
