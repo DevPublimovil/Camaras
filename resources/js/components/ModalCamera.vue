@@ -2,7 +2,7 @@
     <div  class="modal-camera">
         <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="80%" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
-            <img class="figure img-fluid" width="100%" height="100%" :src="enlace"  id="mimodal" >
+            <img class="img-fluid" width="100%" height="100%" :src="enlace"  id="mimodal" >
         </modal>
     </div>
 </template>
@@ -13,7 +13,7 @@ import html2canvas from 'html2canvas';
 		data(){
 			return {
                 enlace:'',
-                id:''
+                id:'',
 			}
 		},
 
