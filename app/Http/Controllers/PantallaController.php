@@ -9,6 +9,7 @@ use App\Pantalla;
 use App\Country;
 use App\PantallaCliente;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PantallaController extends Controller
 {
@@ -214,7 +215,7 @@ class PantallaController extends Controller
         ));
         $data = file_get_contents($url);
         $image = base64_encode($data);
-        $imageName = $pantalla->name.'jpg';
+        $imageName = str_replace(' ','',$pantalla->name).'.jpg';
         \File::put(storage_path(). '/app/public/' . $imageName, $data);
         $miuri = storage_path(). '/app/public/' . $imageName;
         return response()->download($miuri)->deleteFileAfterSend();
