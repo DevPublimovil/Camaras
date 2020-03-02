@@ -43,6 +43,6 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::get('/vistas/month/{date}/{country}', 'VisualizacionesController@graficomonth')->name('vistas.month');
         Route::get('/vistas/year/{date}/{country}', 'VisualizacionesController@graficoYear')->name('vistas.year');
         Route::get('/apigrafico', 'VisualizacionesController@apigrafico')->name('vistas.apiindex');
-        Route::get('download/{id}', 'PantallaController@imagedownload')->name('pantalla.download');
+        Route::get('download/{id}/{fecha}', 'PantallaController@imagedownload')->name('pantalla.download');
     });
 });

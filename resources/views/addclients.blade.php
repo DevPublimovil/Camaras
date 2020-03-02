@@ -54,6 +54,18 @@
                         echo '<option value="'.$i.'">'.$i .' dias</option>';
                       }  
                     ?>
+                    <option value="60">2 meses</option>
+                    <option value="90">3 meses</option>
+                    <option value="120">4 meses</option>
+                    <option value="150">5 meses</option>
+                    <option value="180">6 meses</option>
+                    <option value="210">7 meses</option>
+                    <option value="240">8 meses</option>
+                    <option value="270">9 meses</option>
+                    <option value="300">10 meses</option>
+                    <option value="330">11 meses</option>
+                    <option value="360">1 año</option>
+                    <option value="720">2 años</option>
                 </select>
               </div>
               <div class="form-group text-center">

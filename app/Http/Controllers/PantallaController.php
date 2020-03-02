@@ -10,6 +10,7 @@ use App\Country;
 use App\PantallaCliente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Image;
 
 class PantallaController extends Controller
 {
@@ -90,7 +91,7 @@ class PantallaController extends Controller
             $user->update(['status' => 'activo']);
         }
 
-        $user->update(['fecha_fin' => \Carbon\Carbon::now()->addDays(5)->format('Y-m-d')]);
+        $user->update(['fecha_fin' => \Carbon\Carbon::parse($user->fecha_fin)->addDays(5)->format('Y-m-d')]);
         // guardar los articulos para el cliente
         foreach ($request->pantallas as $pantalla) {
             $busqueda = Pantalla::where('name',$pantalla)->first();
@@ -108,16 +109,7 @@ class PantallaController extends Controller
      */
     public function show($id)
     {
-        $username = 'root';
-        $password = 'med10s';
-        $url = 'http://168.243.53.106/jpg/1/image.jpg';
-        
-        $context = stream_context_create(array(
-            'http' => array(
-                'header'  => "Authorization: Basic " . base64_encode("$username:$password")
-            )
-        ));
-        $data = file_get_contents($url, false, $context);
+
         
     }
 
@@ -141,7 +133,18 @@ class PantallaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cliente = User::find($id);
+
+        if($request->tiempo_vida > $cliente->fecha_fin){
+            $cliente->update([
+                'fecha_fin' => $request->tiempo_vida
+            ]);
+            return back()->with('status','Se actualizó correctamente!');
+        }else{
+            return back()->with('status','La fecha de vencimiento debe ser mayor a '. $cliente->fecha_fin);
+        }
+
+        
     }
 
     /**
@@ -192,32 +195,18 @@ class PantallaController extends Controller
         }
     }
 
-    public function imagedownload($id){
+    public function imagedownload($id, $fecha){
         $pantalla = Pantalla::find($id);
         $cadena = explode('//',$pantalla->link);
-        $username = 'root';
-        if($pantalla->country_id == 1){
-            $password = 'med10s';
-        }else if($pantalla->country_id == 2){
-            $password = 'cuat3';
-        }else if($pantalla->country_id == 4){
-            $password = 'H0ndur4s';
-        }else if($pantalla->country_id == 6){
-            $password = 'Publ1Mov1l@2020';
-        }
-        //$url  = 'http://168.243.52.198//mjpg/1/video.mjpg';
-        $url = 'http://'.$cadena[1].'/jpg/1/image.jpg';
+        $url = 'http://'.$cadena[1].'/axis-cgi/jpg/image.cgi??resolution=640x480&dummy='.$fecha;
+        $img = Image::make(file_get_contents($url))->encode('jpg',50);
+        $headers = [
+            'Content-Type' => 'image/jpg',
+            'Content-Disposition' => 'attachment; filename='. "miimagen.jpg",
+        ];
+        return response()->stream(function() use ($img) {
+            echo $img;
+        }, 200, $headers);
         
-        $context = stream_context_create(array(
-            'http' => array(
-                'header'  => "Authorization: Basic " . base64_encode("$username:$password")
-            )
-        ));
-        $data = file_get_contents($url);
-        $image = base64_encode($data);
-        $imageName = str_replace(' ','',$pantalla->name).'.jpg';
-        \File::put(storage_path(). '/app/public/' . $imageName, $data);
-        $miuri = storage_path(). '/app/public/' . $imageName;
-        return response()->download($miuri)->deleteFileAfterSend();
     }
 }

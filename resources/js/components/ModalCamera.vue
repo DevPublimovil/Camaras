@@ -23,7 +23,26 @@ import html2canvas from 'html2canvas';
                 this.id = event.params.id;
             },
             saveCapture(){
-                window.location="/mediacam/download/"+this.id
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.info("Por favor espoere mientras se descarga su imagen!")
+                let theDate = new Date();
+                window.location.href = "/mediacam/download/"+this.id+"/"+theDate.getTime().toString(10)
             },
         },
         

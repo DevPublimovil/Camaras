@@ -64,7 +64,3 @@
             <client-component :user="{{$user}}" :paises="{{$paises}}" :pantallas="{{$pantallas}}"></client-component>
         @endif
 @endsection
-
-@section('scripts')
-   
-@endsection

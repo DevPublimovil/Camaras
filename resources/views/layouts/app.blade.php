@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{{asset('font-awesome/css/font-awesome.min.css')}}">
         <style>
             .content-wrapper{
-                background-color:#FFFFFF;
+                background-color:#FFFFFF;   
             }
         </style>
         <link rel="stylesheet" href="{{asset('css/toastr.css')}}">

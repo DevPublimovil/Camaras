@@ -47,13 +47,12 @@
                     @else
                     <p class="text-center">No se encontraron artículos</p>
                     @endif
+                    <div class="row">
+                        <div class="col"><small> <a href="#" data-toggle="modal" data-target="#editclient"><strong>Editar fecha de vencimiento:</strong></a> <span class="text-danger">{{$user->fecha_fin}}<span></small></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('scripts')
-    
+    @include('pantallas.editcliente')
 @endsection
