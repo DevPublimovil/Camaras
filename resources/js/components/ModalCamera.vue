@@ -40,7 +40,7 @@ import html2canvas from 'html2canvas';
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
-                toastr.info("Por favor espoere mientras se descarga su imagen!")
+                toastr.info("¡Por favor espere mientras se descarga su imagen!")
                 let theDate = new Date();
                 window.location.href = "/mediacam/download/"+this.id+"/"+theDate.getTime().toString(10)
             },
