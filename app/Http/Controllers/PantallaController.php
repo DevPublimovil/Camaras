@@ -200,9 +200,10 @@ class PantallaController extends Controller
         $cadena = explode('//',$pantalla->link);
         $url = 'http://'.$cadena[1].'/axis-cgi/jpg/image.cgi??resolution=640x480&dummy='.$fecha;
         $img = Image::make(file_get_contents($url))->encode('jpg',50);
+        $imageName = str_replace(' ','',$pantalla->name).'.jpg';
         $headers = [
             'Content-Type' => 'image/jpg',
-            'Content-Disposition' => 'attachment; filename='. "miimagen.jpg",
+            'Content-Disposition' => 'attachment; filename='. $imageName.".jpg",
         ];
         return response()->stream(function() use ($img) {
             echo $img;
