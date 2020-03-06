@@ -34,6 +34,7 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::get('/profileuser','MediacamController@profile')->name('mediacam.profile');
         Route::resource('clients','PantallaController');
         Route::resource('trafico','TraficoController');
+        Route::resource('ventas','VentasController');
         Route::get('/contactos','MediacamController@contactos')->name('mediacam.contacts');
         Route::post('/envio','MediacamController@contactar')->name('mediacam.contacto');
         Route::post('pantalla','PantallaController@changescren')->name('pantallas.change');

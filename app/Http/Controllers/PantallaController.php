@@ -11,6 +11,7 @@ use App\PantallaCliente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Image;
+use Illuminate\Support\Facades\Storage;
 
 class PantallaController extends Controller
 {
@@ -21,18 +22,21 @@ class PantallaController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->fecha_fin <= \Carbon\Carbon::now() && Auth::user()->role_id == 3){
+        if(Auth::user()->fecha_fin <= \Carbon\Carbon::now() && Auth::user()->role_id == 3)
+        {
             $user = User::find(Auth::user()->id);
             $user->update(['status' => 'no-activo']);
             return redirect()->route('mediacam.contacts');
         }
         //verifica si el usuario tiene los permisos
-       if(Auth::user()->hasPermission('view_cameras' && Auth::user()->status == 'activo')){
+       if(Auth::user()->hasPermission('view_cameras' && Auth::user()->status == 'activo'))
+       {
            //busca el usuario y su pais
            $user = User::find(Auth::user()->id)->load('country');
 
            //verifica si el usuario tiene el rol de cliente
-           if($user->role_id == 3){
+           if($user->role_id == 3)
+           {
                //lista los paises en donde el cliente tiene articulos
                 $paises = PantallaCliente::select('countries.id','countries.name','countries.image')
                 ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
@@ -49,11 +53,15 @@ class PantallaController extends Controller
                     ->get();
                 return view('pantallas.index', compact('user','paises','pantallas'));
                 //verifica si el usuario es trafico
-           }else if($user->role_id == 4 || $user->role_id == 5){
+           }
+           else if($user->role_id == 4 || $user->role_id == 5)
+           {
                $pantallas = Pantalla::where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
                return view('pantallas.index', compact('pantallas','user'));
                //verifica si el usuario es administrador
-           }else if($user->role_id == 1 || $user->role_id == 6){
+           }
+           else if($user->role_id == 1 || $user->role_id == 6)
+           {
                 $paises = Country::orderBy('name','ASC')->get();
                 
                 $pantallas = Pantalla::select('pantallas.*')
@@ -62,7 +70,8 @@ class PantallaController extends Controller
                 
                 return view('pantallas.index', compact('user','pantallas','paises'));
            }
-       }else{
+       }
+       else{
            return back();
        }
     }
