@@ -46,7 +46,7 @@ class CaptureCameras extends Command
         $pantallas = Pantalla::where('country_id',1)->select('name','link')->orderBy('id','ASC')->take(20)->get();
 
         $ch = curl_init();
-            for ($i=0; $i < 60; $i++)
+            for ($i=0; $i < 25; $i++)
             {
                 foreach ($pantallas as $key => $pantalla)
                 {

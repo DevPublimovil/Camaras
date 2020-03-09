@@ -8,11 +8,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('trafico.store')}}" method="POST">
+          <form action="@if(Auth::user()->hasPermission('list_clients_ventas') || Auth::user()->hasPermission('add_client_venta')) {{route('ventas.store')}} @else {{route('trafico.store')}} @endif " method="POST">
               @csrf
               <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" name="name" id="name" class="form-control form-control-sm form-control-pu @error('name') is-invalid @enderror">
+                <input type="text" name="name" id="name" class="form-control form-control-sm form-control-pu @error('name') is-invalid @enderror" required>
                 @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -21,7 +21,7 @@
               </div>
               <div class="form-group">
                 <label for="email">Correo</label>
-                <input type="email" name="email" id="email" class="form-control form-control-sm form-control-pu @error('email') is-invalid @enderror">
+                <input type="email" name="email" id="email" class="form-control form-control-sm form-control-pu @error('email') is-invalid @enderror" required>
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -31,7 +31,7 @@
               <input type="hidden" name="role_id" value="3">
               <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" class="form-control form-control-sm form-control-pu @error('password') is-invalid @enderror">
+                <input type="password" name="password" id="password" class="form-control form-control-sm form-control-pu @error('password') is-invalid @enderror" minlength="8" required>
                 @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                 <label for="country_id">País</label>
                 <select name="country_id" id="country_id" class="form-control form-control-pu">
                   @foreach ($paises as $pais)
-                    <option value="{{$pais->id}}" @if($pais->id == Auth::user()->country_id) selected @endif disabled>{{$pais->name}}</option>
+                    <option value="{{$pais->id}}" @if($pais->id == Auth::user()->country_id) selected @endif @if(!Auth::user()->hasPermission('store_articles')) disabled @endif>{{$pais->name}}</option>
                   @endforeach
                 </select>
               </div>
@@ -52,7 +52,7 @@
                     <?php 
                       for($i = 5; $i<=30; $i++){
                         echo '<option value="'.$i.'">'.$i .' dias</option>';
-                      }  
+                      }
                     ?>
                     <option value="60">2 meses</option>
                     <option value="90">3 meses</option>

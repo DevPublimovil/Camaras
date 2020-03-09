@@ -10,6 +10,7 @@ use DataTables;
 use App\Http\Requests\StoreClientRequest;
 use App\Country;
 use App\PantallaCliente;
+use App\Venta;
 
 class TraficoController extends Controller
 {
@@ -90,12 +91,19 @@ class TraficoController extends Controller
     {
         //busca el cliente y retorna la vista con los articulos para agregar
         $client = User::find($id);
-        $pantallas = Pantalla::where('status','disponible')->where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
         $articulos = PantallaCliente::select('pantallas.*','pantalla_clientes.created_at as fecha','pantalla_clientes.id as articulo')
             ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
             ->where('pantalla_clientes.user_id',$client->id)
             ->orderBy('pantalla_clientes.created_at','DESC')
             ->get();
+        if(Auth::user()->hasPermission('store_articles'))
+        {
+            $pantallas = Pantalla::where('status','disponible')->orderBy('name','ASC')->get();
+        }
+        else
+        {
+            $pantallas = Pantalla::where('status','disponible')->where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
+        }
         return view('pantallas.addArticulos',compact('client','pantallas','articulos'));
     }
 

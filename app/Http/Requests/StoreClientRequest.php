@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClientRequest extends FormRequest
 {
-    protected $redirectRoute = 'trafico.index';
+    //protected $redirectRoute = 'trafico.index';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,9 +35,9 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name.required' => 'El nombre es requerido',
-            'email.required'  => 'El correo es requerido',
+            'email.required'  => 'El correo  es requerido',
             'email.email' => 'El correo debe contener @',
-            'email.unique' => 'El correo que ingreso ya esta en uso',
+            'email.unique' => 'El correo ' . $this->email . ' ya esta en uso',
             'password.min' => 'La contraseña debe tener mas de 8 caracteres',
         ];
     }

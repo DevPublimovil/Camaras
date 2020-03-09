@@ -1,5 +1,12 @@
 [
    {
+      "id":56,
+      "key":"list_clients_ventas",
+      "table_name":"users",
+      "created_at":null,
+      "updated_at":null
+   },
+   {
       "id":37,
       "key":"list_clients",
       "table_name":"users",

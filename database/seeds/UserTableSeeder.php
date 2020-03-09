@@ -24,9 +24,6 @@ class UserTableSeeder extends Seeder
                 'remember_token' => Str::random(60),
                 'country_id'     => 1,
                 'role_id'        => $role->id,
-                'departamento_id' => 14,
-                'cargo'         => 'soporte IT',
-                'compania_id'   => 1,
             ]);
         }
     }

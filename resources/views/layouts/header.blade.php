@@ -12,7 +12,7 @@
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown" id="logout">
         <a  class="nav-link dropdown-toggle d-none d-md-block" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="user-name">
-          <img src="{{ asset('storage/'.Auth::user()->avatar) }}" class="img-circle profile-img img-hidden"  style="width:35px;height:30px;" alt="user profile"> <span class="name-user">{{ Auth::user()->name }}</span>   <span class="caret"></span>
+          <img src="{{ asset('storage/'.Auth::user()->avatar) }}" class="img-circle profile-img img-hidden"  style="width:35px;height:30px;" alt="user profile"> <span class="caret"></span>
         </a>
         <a  class="nav-link dropdown-toggle d-block d-md-none" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
             <img src="{{ asset('storage/'.Auth::user()->avatar) }}" class="img-circle profile-img img-hidden" style="width:35px;height:30px;" alt="user profile">

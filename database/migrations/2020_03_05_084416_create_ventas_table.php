@@ -14,9 +14,11 @@ class CreateVentasTable extends Migration
     public function up()
     {
         Schema::create('ventas', function (Blueprint $table) {
-            $table->unsignedBigInteger('cliente_id');
-            $table->unsignedBigInteger('vendedor_id');
-            $table->timestamps();
+            $table->bigInteger('cliente_id')->unsigned()->index();
+            $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
+            $table->bigInteger('vendedor_id')->unsigned()->index();
+            $table->foreign('vendedor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['cliente_id', 'vendedor_id']);
         });
     }
 

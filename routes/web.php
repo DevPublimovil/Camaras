@@ -12,14 +12,13 @@ use App\Country;
 */
 
 Route::get('/', function () {
-    if(Auth::check()==true && Auth::user()->status == 'activo'){
-        if(Auth::user()->role_id == 1){
-            return redirect()->route('voyager.dashboard');
-        }else{
-            return redirect()->route('clients.index');
-        }
-    } else {
-        return view('login',compact('countries'));
+    if(Auth::check())
+    {
+        return redirect()->route('clients.index');
+    }
+    else
+    {
+        return view('login');
     }
 })->name('inicio');
 
@@ -32,9 +31,10 @@ Route::group(['prefix' => 'mediacam'], function () {
     Voyager::routes();
     Route::group(['middleware' => ['auth']], function(){
         Route::get('/profileuser','MediacamController@profile')->name('mediacam.profile');
-        Route::resource('clients','PantallaController');
-        Route::resource('trafico','TraficoController');
-        Route::resource('ventas','VentasController');
+        Route::resource('/clients','PantallaController');
+        Route::resource('/trafico','TraficoController');
+        Route::resource('/ventas','VentasController');
+        Route::get('/apiventas', 'VentasController@apiventas')->name('ventas.datatables');
         Route::get('/contactos','MediacamController@contactos')->name('mediacam.contacts');
         Route::post('/envio','MediacamController@contactar')->name('mediacam.contacto');
         Route::post('pantalla','PantallaController@changescren')->name('pantallas.change');

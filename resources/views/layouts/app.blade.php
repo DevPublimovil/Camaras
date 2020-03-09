@@ -19,21 +19,25 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
         @yield('styles')
     </head>
-    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
-        <div class="wrapper" id="app">
-            @include('layouts.header')
-            @include('layouts.menu')
+    <body class="hold-transition @guest login-page  @else sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse @endguest">
+        @guest
+            @yield('content')
+        @else
+            <div class="wrapper" id="app">
+                @include('layouts.header')
+                @include('layouts.menu')
 
-            <div class="content-wrapper" style="padding-top:20px;padding-bottom:20px;">
-                <!-- Main content -->
-                <section class="content">
-                    <div class="container-fluid">
-                        @yield('content')
-                    </div><!-- /.container-fluid -->
-                </section>
+                <div class="content-wrapper" style="padding-top:20px;padding-bottom:20px;">
+                    <!-- Main content -->
+                    <section class="content">
+                        <div class="container-fluid">
+                            @yield('content')
+                        </div><!-- /.container-fluid -->
+                    </section>
+                </div>
+                <modal-camera></modal-camera>
             </div>
-            <modal-camera></modal-camera>
-        </div>
+        @endguest
 
        <script src="{{asset('js/app.js')}}"></script>
        <script src="{{asset('js/adminlte.min.js')}}"></script>
