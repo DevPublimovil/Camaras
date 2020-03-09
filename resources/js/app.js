@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-
+window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
 
 
@@ -39,6 +39,7 @@ Vue.component('svg-icon', require('./components/SvgIcon.vue').default);
 Vue.component('default-component', require('./components/DefaultComponent.vue').default);
 Vue.component('trafico-component', require('./components/TraficoComponent.vue').default);
 Vue.component('client-component', require('./components/ClientComponent.vue').default);
+Vue.component('media-component', require('./components/MediaComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

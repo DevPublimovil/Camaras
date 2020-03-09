@@ -45,6 +45,16 @@
             </a>
           </li>
           @endif
+          @if(Auth::user()->hasPermission('browse_medios'))
+            <li class="nav-item">
+              <a href="{{route('medios.index')}}" class="nav-link">
+                <i class="nav-icon fa fa-picture-o" aria-hidden="true"></i>
+                <p>
+                  Galeria
+                </p>
+              </a>
+            </li>
+          @endif
           <li class="nav-item">
             <a href="{{route('mediacam.profile')}}" class="nav-link">
               <i class="nav-icon fa fa-user-circle"></i>

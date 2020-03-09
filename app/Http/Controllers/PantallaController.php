@@ -207,7 +207,7 @@ class PantallaController extends Controller
     public function imagedownload($id, $fecha){
         $pantalla = Pantalla::find($id);
         $cadena = explode('//',$pantalla->link);
-        $url = 'http://'.$cadena[1].'/axis-cgi/jpg/image.cgi?resolution=800x600&dummy='.$fecha;
+        $url = 'http://'.$cadena[1].'/axis-cgi/jpg/image.cgi?dummy='.$fecha;
         $img = Image::make(file_get_contents($url))->encode('jpg',50);
         $imageName = str_replace([' ','.',','],'',$pantalla->name).'.jpg';
         $headers = [
