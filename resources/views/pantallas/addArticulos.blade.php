@@ -10,7 +10,7 @@
             @endif
         </div>
     </div>
-    <select-pantalla :articulos="{{$pantallas}}" :cliente="{{$client}}"></select-pantalla>
+    <select-pantalla :articulos="{{$pantallas}}" :cliente="{{$client}}" :user="{{Auth::user()->role_id}}"></select-pantalla>
 
     @if(isset($articulos))
         <div class="row justify-content-center">

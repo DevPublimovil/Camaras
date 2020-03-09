@@ -22,7 +22,7 @@
 <script>
  
   export default {
-      props:['articulos','cliente'],
+      props:['articulos','cliente','user'],
     data () {
       return {
         value: [],
@@ -32,16 +32,28 @@
 
     methods: {
         enviardatos(){
+            let vm = this
             axios.post('/mediacam/clients', {
                 pantallas:this.value,
                 cliente:this.cliente.id
             }).then(function(response){
                  toastr.success('Los articulos se agregaron correctamente!');
-                 location.href='/mediacam/trafico';
+                 if(vm.user == 5 || vm.user == 6)
+                 {
+                     location.href='/mediacam/ventas';
+                 }else{
+                     location.href='/mediacam/trafico';
+                 }
             });
         },
         cancelar(){
-            location.href='/mediacam/trafico';
+            let vm = this
+            if(vm.user == 5 || vm.user == 6)
+            {
+                location.href='/mediacam/ventas';
+            }else{
+                location.href='/mediacam/trafico';
+            }
         }
     },
 
