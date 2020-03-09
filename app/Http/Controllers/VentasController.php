@@ -56,7 +56,7 @@ class VentasController extends Controller
                 'email' => $request->email,
                 'password' =>  bcrypt($request->password),
                 'role_id' => $request->role_id,
-                'country_id' => $request->country_id,
+                'country_id' => ($request->country_id) ? $request->country_id : Auth::user()->country_id,
                 'fecha_fin' => $fechafin,
             ]);
 
