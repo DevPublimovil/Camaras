@@ -8,6 +8,8 @@ class CamaraController extends Controller
 {
     public function vercamara($ip)
     {
+
+        //comsumir camara
         header('Content-Type: multipart/x-mixed-replace; boundary=myboundary');
         while (@ob_end_clean());
         $ch = curl_init();
