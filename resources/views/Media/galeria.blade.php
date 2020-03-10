@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <media-component base-path="'/'"></media-component>
+    <media-component :paises="{{$paises}}"></media-component>
 @endsection

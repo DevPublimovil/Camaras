@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
+use App\Country;
 
 class MediaController extends Controller
 {
@@ -23,15 +24,19 @@ class MediaController extends Controller
 
     public function index()
     {
-        return view('Media.galeria');
+        $paises = Country::orderBy('name','ASC')->get();
+        return view('Media.galeria', compact('paises'));
     }
 
     public function files(Request $request)
     {
         $folder = $request->folder;
+        if ($folder == '/') {
+            $folder = '';
+        }
         
         $dir = $this->directory.$folder;
-
+        
         $files = [];
         $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
         $storageItems = $storage->listWith(['mimetype'], $dir);

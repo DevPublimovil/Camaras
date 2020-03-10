@@ -1,6 +1,6 @@
 <template>
     <div  class="modal-camera">
-        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%" @before-open="beforeOpen">
+        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%" @before-close="beforeClose" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
             <img width="100%" height="100%" :src="enlace"  id="mimodal" >
         </modal>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import html2canvas from 'html2canvas';
     export default{
 		data(){
 			return {
@@ -19,8 +18,15 @@ import html2canvas from 'html2canvas';
 
         methods:{
             beforeOpen(event){
-                this.enlace = event.params.iframe;
+                let ip = '/mediacam/camara/'+event.params.iframe
+                this.enlace = ip
+                //this.enlace = event.params.iframe;
                 this.id = event.params.id;
+            },
+            beforeClose(){
+                this.enlace = ''
+                this.id = ''
+                location.reload();
             },
             saveCapture(){
                 toastr.options = {

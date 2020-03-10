@@ -144,13 +144,13 @@ class PantallaController extends Controller
     {
         $cliente = User::find($id);
 
-        if($request->tiempo_vida > $cliente->fecha_fin){
+        if($request->tiempo_vida > \Carbon\Carbon::now()){
             $cliente->update([
                 'fecha_fin' => $request->tiempo_vida
             ]);
             return back()->with('status','Se actualizó correctamente!');
         }else{
-            return back()->with('status','La fecha de vencimiento debe ser mayor a '. $cliente->fecha_fin);
+            return back()->with('errores','La fecha de vencimiento debe ser mayor al día de hoy ');
         }
 
         
