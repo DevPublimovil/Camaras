@@ -2,7 +2,7 @@
     <div  class="modal-camera">
         <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%"  @before-close="beforeClose" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
-            <img width="100%" height="100%" :src="enlace"  id="mimodal" alt="Camara en vivo" @load="onImgLoad">
+            <img width="100%" height="100%" :src="enlace"  id="mimodal"  @load="onImgLoad">
             <div class="spinner-border text-warning isloading" role="status" v-if="!isLoaded">
                 <span class="sr-only">Loading...</span>
             </div>

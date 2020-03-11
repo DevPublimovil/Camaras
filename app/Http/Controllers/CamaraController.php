@@ -17,7 +17,7 @@ class CamaraController extends Controller
         curl_setopt($ch, CURLOPT_URL, "http://{$ip}/axis-cgi/mjpg/video.cgi");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
         curl_setopt($ch, CURLOPT_USERPWD, 'yoda:iwyoda');
         $output = curl_exec($ch);
         curl_close($ch);
