@@ -12,7 +12,7 @@
             </ul>
         </div>
     </div>
-    <sv-component :screns="screens" :user="user" v-on:select="countryselect"></sv-component>
+    <sv-component :screns="screens" :user="user" ></sv-component>
     </div>
 </template>
 
@@ -44,7 +44,7 @@
                     this.selectPantalla = data.pais.pantallas;
                     this.selectCountry = data.pais.name;
                 });
-            }
+            },
         },
 
         created(){

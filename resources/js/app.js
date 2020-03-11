@@ -40,6 +40,7 @@ Vue.component('default-component', require('./components/DefaultComponent.vue').
 Vue.component('trafico-component', require('./components/TraficoComponent.vue').default);
 Vue.component('client-component', require('./components/ClientComponent.vue').default);
 Vue.component('media-component', require('./components/MediaComponent.vue').default);
+Vue.component('InfinitiLoading', require('vue-infinite-loading').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
