@@ -1,8 +1,11 @@
 <template>
     <div  class="modal-camera">
-        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%" @before-close="beforeClose" @before-open="beforeOpen">
+        <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%"  @before-close="beforeClose" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
-            <img width="100%" height="100%" :src="enlace"  id="mimodal" alt="espere mientras carga el video">
+            <img width="100%" height="100%" :src="enlace"  id="mimodal" alt="Camara en vivo" @load="onImgLoad">
+            <div class="spinner-border text-warning isloading" role="status" v-if="!isLoaded">
+                <span class="sr-only">Loading...</span>
+            </div>
         </modal>
        
     </div>
@@ -14,7 +17,8 @@
 			return {
                 enlace:'',
                 id:'',
-                name:''
+                name:'',
+                isLoaded: false,
 			}
 		},
 
@@ -41,8 +45,6 @@
 
                 const img = new Image();
                 img.src = this.enlace;
-                img.onload = function() {
-                    console.log('ok')
                 const w = img.width,h = img.height;
 
                 ctx.fillText('Source', w * .5, 20);
@@ -59,9 +61,10 @@
                 link.download = namepantalla;
                 link.href = canvas.toDataURL()
                 link.click();
-                };
-                
             },
+            onImgLoad(){
+                this.isLoaded = true
+            }
         },
         
     }
@@ -75,5 +78,11 @@
         top: 5px;
         right:25px;
         cursor:pointer;
+    }
+    .isloading{
+        color: #FFFFFF;
+        position: absolute;
+        top: 50%;
+        right:50%;
     }
 </style>
