@@ -205,7 +205,7 @@ class PantallaController extends Controller
     }
 
     public function imagedownload($id, $fecha){
-        $pantalla = Pantalla::find($id);
+        /* $pantalla = Pantalla::find($id);
         $cadena = explode('//',$pantalla->link);
         $url = 'http://'.$cadena[1].'/axis-cgi/jpg/image.cgi?dummy='.$fecha;
         $img = Image::make(file_get_contents($url))->encode('jpg',50);
@@ -216,7 +216,15 @@ class PantallaController extends Controller
         ];
         return response()->stream(function() use ($img) {
             echo $img;
-        }, 200, $headers);
-        
+        }, 200, $headers); */
+        header('Content-Type: multipart/x-mixed-replace; boundary=myboundary');
+        while (@ob_end_clean());
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://{$ip}/jpg/1/image.jpg");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+        curl_setopt($ch, CURLOPT_USERPWD, 'yoda:iwyoda');
+        $output = curl_exec($ch);
+        curl_close($ch);
     }
 }

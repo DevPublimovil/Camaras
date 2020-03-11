@@ -58,9 +58,11 @@
 @endsection
 
 @section('content')
+
         @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 5 )
             <trafico-component :user="{{$user}}"  :pantallas="{{$pantallas}}"></trafico-component>
         @elseif(Auth::user()->role_id == 3 || Auth::user()->role_id == 1 || Auth::user()->role_id == 6)
             <client-component :user="{{$user}}" :paises="{{$paises}}" :pantallas="{{$pantallas}}"></client-component>
         @endif
+        <canvas id="canvas" width="800" height="450" style="display:none"></canvas>
 @endsection

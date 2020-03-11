@@ -2,8 +2,9 @@
     <div  class="modal-camera">
         <modal class="overlay" id="modal-link" name="modal-camara" :draggable="true" :resizable="true" :adaptive="true" width="80%" height="70%" @before-close="beforeClose" @before-open="beforeOpen">
             <span><i class="fa fa-camera capturas fa-2x" aria-hidden="true" @click="saveCapture()"></i></span>
-            <img width="100%" height="100%" :src="enlace"  id="mimodal" >
+            <img width="100%" height="100%" :src="enlace"  id="mimodal" alt="espere mientras carga el video">
         </modal>
+       
     </div>
 </template>
 
@@ -13,42 +14,53 @@
 			return {
                 enlace:'',
                 id:'',
+                name:''
 			}
 		},
 
         methods:{
             beforeOpen(event){
-                let ip = '/mediacam/camara/'+event.params.iframe
-                this.enlace = ip
-                //this.enlace = event.params.iframe;
-                this.id = event.params.id;
+                this.enlace = '/mediacam/camara/'+event.params.iframe
+                this.name = event.params.name
+                this.id = event.params.id
             },
             beforeClose(){
                 this.enlace = ''
                 this.id = ''
-                location.reload();
+                this.name=''
+                //location.reload();
             },
             saveCapture(){
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": false,
-                    "positionClass": "toast-top-center",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
-                toastr.info("¡Por favor espere mientras se descarga su imagen!")
-                let theDate = new Date();
-                window.location.href = "/mediacam/download/"+this.id+"/"+theDate.getTime().toString(10)
+                var res = this.name.replace(/[^A-Z0-9]+/ig, "_")
+                var fecha = moment().format('d_m_Y');
+                var namepantalla = res+'_'+fecha+'.jpg'
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.font = '16px sans-serif';
+                ctx.textAlign = 'center';
+
+                const img = new Image();
+                img.src = this.enlace;
+                img.onload = function() {
+                    console.log('ok')
+                const w = img.width,h = img.height;
+
+                ctx.fillText('Source', w * .5, 20);
+                ctx.drawImage(img, 0, 24, w, h);
+
+                ctx.fillText('Smoothing = TRUE', w * 2.5, 20);
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(img, w, 24, w * 3, h * 3);
+
+                ctx.fillText('Smoothing = FALSE', w * 5.5, 20);
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(img, w * 4, 24, w * 3, h * 3);
+                var link = document.createElement('a');
+                link.download = namepantalla;
+                link.href = canvas.toDataURL()
+                link.click();
+                };
+                
             },
         },
         

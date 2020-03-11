@@ -7,7 +7,7 @@
 require('./bootstrap');
 window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
-
+window.moment = require('moment');
 
 import VModal from 'vue-js-modal';
 
