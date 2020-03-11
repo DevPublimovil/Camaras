@@ -32,7 +32,8 @@
                 this.enlace = ''
                 this.id = ''
                 this.name=''
-                //location.reload();
+                this.isLoaded = false
+                location.reload();
             },
             saveCapture(){
                 var res = this.name.replace(/[^A-Z0-9]+/ig, "_")

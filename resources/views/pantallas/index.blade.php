@@ -1,15 +1,5 @@
 @extends('layouts.app')
 
-@section('buscador')
-
-    <input class="form-control form-control-navbar" v-model="pantalla" type="search" placeholder="Buscar" aria-label="Search" v-on:change="enviar()">
-    <div class="input-group-append">
-      <button class="btn btn-navbar" type="submit">
-        <i class="fa fa-search"></i>
-      </button>
-    </div>
- 
-@endsection
 @section('styles')
     <style>
         @media screen and (min-width: 745px) {
