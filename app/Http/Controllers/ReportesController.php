@@ -9,12 +9,17 @@ class ReportesController extends Controller
 {
     public function generarReporte(Request $request)
     {
+        $paths = [];
+        foreach ($request->imagenes as $item){
+            $cadena = substr($item,22);
+            $paths []= $cadena ;
+        }
         $name = strtotime(\Carbon\Carbon::now());
         $data = [
-            'capturas' => $request->imagenes,
+            'capturas' => $paths,
             'descripcion' => $request->descripcion
         ];
-        $pdf = \PDF::loadView('reportes.plantillauno', $data);
+        $pdf = \PDF::loadView('reportes.plantillauno', $data)->setPaper('A4', 'landscape');
  
         return $pdf->download($name .'.pdf');
     }

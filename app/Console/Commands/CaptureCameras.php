@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Pantalla;
 use Illuminate\Support\Facades\Storage;
 use Image;
+use Illuminate\Support\Facades\Log;
 
 class CaptureCameras extends Command
 {
@@ -46,25 +47,30 @@ class CaptureCameras extends Command
         $pantallas = Pantalla::where('country_id',1)->select('name','link')->orderBy('id','ASC')->take(20)->get();
 
         $ch = curl_init();
-            for ($i=0; $i < 25; $i++)
+            for ($i=0; $i < 60; $i++)
             {
                 foreach ($pantallas as $key => $pantalla)
                 {
-                    $cadena = explode('//',$pantalla->link);
-                    $url = 'http://' . $cadena[1] . '/axis-cgi/jpg/image.cgi';
-                    $carpeta= str_replace([' ','.',','],'_',$pantalla->name);
-                    $imageName = Str::random(20).'.jpg';
+                    $url = 'http://' . $pantalla->link . '/axis-cgi/jpg/image.cgi';
+                    $carpeta=  'el_salvador/'.\Carbon\Carbon::now()->locale('es')->isoFormat('dddd').'/'.str_replace([' ','.',','],'_',$pantalla->name);
+                    $imageName = \Carbon\Carbon::now()->format('Y_m_d').strtotime(\Carbon\Carbon::now()).'.jpg';
+                    while (@ob_end_clean());
+                    header('Content-Type: multipart/x-mixed-replace; boundary=myboundary');
+                    $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                    $image = curl_exec($ch);
-                    $info = curl_getinfo($ch);
-                    
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_USERPWD, 'yoda:iwyoda');
+                    $image= curl_exec($ch);
                     if(!empty($image))
                     {
                         $img = Image::make($image)->encode('jpg',30);
-                        Storage::disk('public')->put('/Capturas/'.$carpeta.'/'.$imageName,$img);
+                        Storage::disk('public')->put($carpeta.'/'.$imageName,$img);
+                    }else{
+                        Log::info('La pantalla no respondio despues de los 25 segundos: '.$pantalla->name);
                     }
                 }
             }

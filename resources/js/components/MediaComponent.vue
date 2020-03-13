@@ -19,7 +19,8 @@
                 </li>
             </ol>
         </nav>
-        <div class="row">
+        <p v-if="files.length == 0" class="text-center">No se encontraron archivos para mostrar</p>
+        <div class="row" v-else>
             <div class="col-lg-9 col-md-9 col-sm-12">
                 <div class="d-flex">
                     <ul id="files">
@@ -92,7 +93,7 @@
 
         <!-- Image Modal -->
         <div class="modal fade" :id="'imagemodal_'+this._uid" v-if="selected_file && fileIs(selected_file, 'image')">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -117,7 +118,7 @@
                         Descripción
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="/mediacam/reportes" method="POST">
+                    <form action="/mediacam/reportes" method="POST" id="formDescription">
                         <div class="modal-body">
                         <input type="hidden" name="_token" :value="csrf">
                         <div class="form-group" v-for="(file, index) in selectFiles" v-bind:key="index">
@@ -127,7 +128,7 @@
                         </div>
 
                         <div class="modal-footer text-center">
-                            <button type="submit" class="btn btn-sm btn-primary" v-on:click="generarResporte()">Aceptar</button>
+                            <button type="button" class="btn btn-sm btn-primary" v-on:click="generarResporte()">Aceptar</button>
                         </div>
                     </form>
                 </div>
@@ -320,7 +321,12 @@ export default {
             return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:80%; :80%;';
         },
         generarResporte(){
-            localStorage.clear();
+            toastr.info('¡Espere un momento mientras se genera el reporte!')
+            $("#formDescription").submit();
+            document.getElementById('formDescription').reset();
+            $("#insertDescription").modal('hide');
+            localStorage.clear()
+            this.selectFiles = []
         },
         bytesToSize: function(bytes) {
             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
