@@ -23,19 +23,14 @@
                 <p>No se encontraron pantallas para mostrar</p>
             </div>
         </div>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
     
 </div>
 </template>
 
 <script>
-    import InfiniteLoading from 'vue-infinite-loading';
     import EventBus from '../eventbus.js';
     export default{
-        components: {
-                InfiniteLoading,
-            },
         props:['screns','user'],
         data(){
             return{

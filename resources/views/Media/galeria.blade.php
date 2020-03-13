@@ -2,4 +2,5 @@
 
 @section('content')
     <media-component :paises="{{$paises}}"></media-component>
+   
 @endsection

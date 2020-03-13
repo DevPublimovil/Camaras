@@ -19,26 +19,77 @@
                 </li>
             </ol>
         </nav>
-        <div class="d-flex">
-            <ul id="files">
-                <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)">
-                    <div :class="'file_link ' + (isFileSelected(file) ? 'selected' : '')">
-                        <div class="link_icon">
-                            <template v-if="fileIs(file, 'image')">
-                                <img :src="file.path" width="65px">
-                            </template>
-                            <template v-else="fileIs(file, 'folder')">
-                                <i class="icon fa fa-folder" aria-hidden="true"></i>
-                            </template>
-                        </div>
-                        <div class="details pl-1" >
-                            <div :class="file.type">
-                                <h4>{{ file.name }}</h4>
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12">
+                <div class="d-flex">
+                    <ul id="files">
+                        <li class="items_list" v-for="(file, index) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart">
+                            <div :class="'file_link '+ (isFileSelected(file) ? 'selected' : '')" >
+                                <div class="link_icon" >
+                                    <template v-if="fileIs(file, 'image')"  >
+                                        <img :src="file.path" width="65px">
+                                    </template>
+                                    <template v-else="fileIs(file, 'folder')">
+                                        <i class="icon fa fa-folder" aria-hidden="true"></i>
+                                    </template>
+                                </div>
+                                <div class="details pl-1" >
+                                    <div :class="file.type">
+                                        <h4>{{ file.name }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                <div class="right_details">
+                    <div v-if="selected_files.length == 1" class="right_details">
+                        <div class="detail_img">
+                            <div v-if="fileIs(selected_file, 'image')">
+                                <img class="img-fluid img-thumbnail" id="preview" :src="selected_file.path" />
+                            </div>
+                            <div v-else="fileIs(selected_file, 'folder')" class="text-center">
+                                <div class="d-flex justify-content-around">
+                                    <i class="icon fa fa-folder fa-5x mt-4" aria-hidden="true"></i>
+                                </div>
+                                 <p>{{ selected_file.name }}</p>
                             </div>
                         </div>
                     </div>
-                </li>
-            </ul>
+                    <div class="row m-2" v-if="selectFiles.length > 0">
+                        <div class="col-8">
+                            <small class="text-info">Has agregado {{ selectFiles.length }} capturas</small>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-sm btn-primary pull-right" v-on:click="generarResporte()">Generara reporte</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="midrop" :class="(selectFiles.length == 0) ? 'droptarget' : ''" v-on:drop="drop" v-on:dragover="allowDrop">
+                    <p class="text-secondary font-weight-bold message_drag" v-if="selectFiles.length==0">Suelte sus capturas aquí</p>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                                <li class="list-group-item captura_select p-1 m-1" v-for="(item, index) of selectFiles" >
+                                    <div class="row">
+                                        <div class="col-11 " v-on:click="selectFile(item, $event)">
+                                            {{'Captura '+parseInt(index+1)}} 
+                                        </div>
+                                        <div class="col-1">
+                                            <span >
+                                                <button class="btn btn-sm btn-danger pull-right" v-on:click="deleteStorage(index)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Image Modal -->
@@ -64,6 +115,7 @@
 </template>
 
 <script>
+import download from 'downloadjs'
 export default {
     props: {
             paises:{
@@ -71,6 +123,10 @@ export default {
                 default: function() {
                     return [];
                 }
+            },
+            basePath: {
+                type: String,
+                default: '/'
             },
             filename: {
                 type: String,
@@ -144,19 +200,13 @@ export default {
     data(){
         return{
             current_folder: '/el_salvador/',
-		  		selected_files: [],
-                files: [],
-                hidden_element: null,
-                expanded: true,
-                selectCountry:'El Salvador',
-                modals: {
-                    new_folder: {
-                        name: ''
-                    },
-                    move_files: {
-                        destination: ''
-                    }
-                }
+            selected_files: [],
+            files: [],
+            hidden_element: null,
+            expanded: true,
+            idcountry:1,
+            selectCountry:'',
+            selectFiles:[],
         }
     },
 
@@ -169,10 +219,13 @@ export default {
         getFiles: function() {
             var vm = this;
             axios.post('/mediacam/medios/files',{
-                folder: vm.current_folder
+                folder: vm.current_folder,
+                country:vm.idcountry
             }).then(({data})=>{
+                vm.current_folder = data.current_folder
+                this.selectCountry = data.country.name
                 vm.files = [];
-                for (var i = 0, file; file = data[i]; i++) {
+                for (var i = 0, file; file = data.files[i]; i++) {
                     if (vm.filter(file)) {
                         vm.files.push(file);
                     }
@@ -184,10 +237,50 @@ export default {
             })
         },
         changecountry(country){
+            this.idcountry = country
+            if(country == 1){
+                this.current_folder = '/el_salvador/'
+            }else if(country == 2){
+                this.current_folder = '/guatemala/'
+            }else if(country == 3){
+                this.current_folder = '/costa_rica/'
+            }else if(country == 4){
+                this.current_folder = '/honduras/'
+            }else if(country == 5){
+                this.current_folder = '/panama/'
+            }else if(country == 6){
+                this.current_folder = '/nicaragua/'
+            }
+            this.getFiles();
+        },
+        dragStart(event) {
+            event.dataTransfer.setData("Text", event.target.id);
+        },
+        /* dragging:function(event) {
+            document.getElementById("demo").innerHTML =
+              "The p element is being dragged";
+        }, */
+        allowDrop:function(event) {
+            event.preventDefault();
+        },
+        drop:function(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("Text");
+            if(this.selectFiles.includes(this.files[data])){
+                toastr.warning('¡La captura esta agregada!')
+            }else{
+                this.selectFiles.push(this.files[data]);
+                localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+            }
             
         },
         isFileSelected: function(file) {
-            return this.selected_files.includes(file);
+            return this.selectFiles.includes(file)
+        },
+        deleteStorage(item){
+            this.selectFiles.splice(item,1)
+            localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+            //document.getElementById('preview').src = ''
         },
         fileIs: function(file, type) {
             if (typeof file === 'string') {
@@ -204,6 +297,17 @@ export default {
         imgIcon: function(path) {
             path = path.replace(/\\/g,"/");
             return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:80%; :80%;';
+        },
+        generarResporte(){
+            let vm = this
+            axios.post('/mediacam/reportes',{
+                imagenes: vm.selectFiles,
+                responseType: 'blob'
+            }).then(({data})=>{
+                download(data, "prueba.pdf", 'application/pdf')
+                localStorage.clear();
+                vm.selectFiles = []
+            }).catch(error => console.log(error));
         },
         bytesToSize: function(bytes) {
             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -308,6 +412,7 @@ export default {
                 var path = this.getCurrentPath();
                 path.length = i + 1;
                 this.current_folder = this.basePath+path.join('/');
+                this.current_folder = this.current_folder + '/'
             }
 
             this.getFiles();
@@ -327,6 +432,8 @@ export default {
                 }
             }
         }
+
+
 
         this.onkeydown = function(evt) {
             evt = evt || window.event;
@@ -359,6 +466,14 @@ export default {
                 }
             }
         };
+    },
+    created() {
+        let datosDB = JSON.parse(localStorage.getItem('capturas-vue'));
+        if(datosDB == null){
+            this.selectFiles = [];
+        }else{
+            this.selectFiles = datosDB;  
+        }
     },
 }
 </script>
@@ -418,8 +533,8 @@ h4 {
     width: 100%;
 }
 #files li .file_link.selected, #files li .file_link:hover {
-    background: #4da7e8!important;
-    border-color: #2581b8;
+    background: #FC876E!important;
+    border-color: #FB3D14;
     color: #fff;
 }
 ul {
@@ -441,5 +556,29 @@ div {
     font-size: 11px;
     position: relative;
     top: -3px;
+}
+.items_list{
+    width: 25%;
+}
+.captura_select{
+    cursor:pointer;
+}
+
+.captura_select:hover{
+    background-color:#FC876E;
+    color:#FFF
+}
+.droptarget{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.midrop{
+    border-radius: 5px;
+    border: 2px solid #ccc!important;
+    min-height:200px;
+}
+.breadcrumb-item{
+    cursor:pointer
 }
 </style>
