@@ -63,7 +63,6 @@ class MediaController extends Controller
                     'relative_path' => $item['path'],
                     'size'          => $item['size'],
                     'last_modified' => $item['timestamp'],
-                    'thumbnails'    => [],
                 ];
             }
         }
@@ -75,33 +74,4 @@ class MediaController extends Controller
         ]);
     }
 
-    public function selectContry($country)
-    {
-        switch ($country->id) {
-            case 1:
-                $f = str_replace(' ','_',$country->name);
-                return '/'. strtolower($f) .'/';
-                break;
-            case 2:
-                return '/'.strtolower($country->name).'/';
-                break;
-            case 3:
-                $f = str_replace(' ','_',$country->name);
-                return  '/'.strtolower($f).'/';
-                break;
-            case 4:
-                return '/'.strtolower($country->name).'/';
-                break;
-            case 5:
-                return '/'.strtolower($country->name).'/';
-                break;
-            case 6:
-                return '/'.strtolower($country->name).'/';
-                break;
-            default:
-                $f = str_replace(' ','_',$country->name);
-                return '/'.strtolower($f).'/';
-                break;
-        }
-    }
 }

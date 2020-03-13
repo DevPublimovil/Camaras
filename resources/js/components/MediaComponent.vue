@@ -54,16 +54,14 @@
                                 <div class="d-flex justify-content-around">
                                     <i class="icon fa fa-folder fa-5x mt-4" aria-hidden="true"></i>
                                 </div>
-                                 <p>{{ selected_file.name }}</p>
+                                 <small>{{ selected_file.name }}</small>
                             </div>
                         </div>
                     </div>
-                    <div class="row m-2" v-if="selectFiles.length > 0">
-                        <div class="col-8">
+                    <div class="row mt-2" v-if="selectFiles.length > 0">
+                        <div class="col-12">
+                            <button class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#insertDescription">Generara reporte</button>
                             <small class="text-info">Has agregado {{ selectFiles.length }} capturas</small>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-sm btn-primary pull-right" v-on:click="generarResporte()">Generara reporte</button>
                         </div>
                     </div>
                 </div>
@@ -111,11 +109,35 @@
             </div>
         </div>
         <!-- End Image Modal -->
+        <!-- Image Modal -->
+        <div class="modal fade" id="insertDescription">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Descripción
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <form action="/mediacam/reportes" method="POST">
+                        <div class="modal-body">
+                        <input type="hidden" name="_token" :value="csrf">
+                        <div class="form-group" v-for="(file, index) in selectFiles" v-bind:key="index">
+                            <input type="hidden" name="imagenes[]" :value="file.path">
+                        </div>
+                        <textarea class="form-control" name="descripcion" id="description" cols="30" rows="10" v-model="description"></textarea>
+                        </div>
+
+                        <div class="modal-footer text-center">
+                            <button type="submit" class="btn btn-sm btn-primary" v-on:click="generarResporte()">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Image Modal -->
     </div>
 </template>
 
 <script>
-import download from 'downloadjs'
 export default {
     props: {
             paises:{
@@ -207,6 +229,8 @@ export default {
             idcountry:1,
             selectCountry:'',
             selectFiles:[],
+            description:'',
+            csrf:''
         }
     },
 
@@ -266,13 +290,9 @@ export default {
         drop:function(event) {
             event.preventDefault();
             var data = event.dataTransfer.getData("Text");
-            if(this.selectFiles.includes(this.files[data])){
-                toastr.warning('¡La captura esta agregada!')
-            }else{
-                this.selectFiles.push(this.files[data]);
-                localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
-            }
-            
+            this.selectFiles.push(this.files[data]);
+            localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+            toastr.success('¡La captura ha sido agragada!')
         },
         isFileSelected: function(file) {
             return this.selectFiles.includes(file)
@@ -280,6 +300,7 @@ export default {
         deleteStorage(item){
             this.selectFiles.splice(item,1)
             localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+            toastr.success('La captura ha sido removida')
             //document.getElementById('preview').src = ''
         },
         fileIs: function(file, type) {
@@ -299,15 +320,7 @@ export default {
             return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:80%; :80%;';
         },
         generarResporte(){
-            let vm = this
-            axios.post('/mediacam/reportes',{
-                imagenes: vm.selectFiles,
-                responseType: 'blob'
-            }).then(({data})=>{
-                download(data, "prueba.pdf", 'application/pdf')
-                localStorage.clear();
-                vm.selectFiles = []
-            }).catch(error => console.log(error));
+            localStorage.clear();
         },
         bytesToSize: function(bytes) {
             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -419,6 +432,7 @@ export default {
         },
     },
     mounted() {
+        this.csrf = document.querySelector('meta[name="csrf-token"]').content
         this.getFiles();
         var vm = this;
 

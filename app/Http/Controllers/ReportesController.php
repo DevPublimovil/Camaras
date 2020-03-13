@@ -9,7 +9,13 @@ class ReportesController extends Controller
 {
     public function generarReporte(Request $request)
     {
-        $pdf = PDF::loadHtml('hello world');
-        return $pdf->output();
+        $name = strtotime(\Carbon\Carbon::now());
+        $data = [
+            'capturas' => $request->imagenes,
+            'descripcion' => $request->descripcion
+        ];
+        $pdf = \PDF::loadView('reportes.plantillauno', $data);
+ 
+        return $pdf->download($name .'.pdf');
     }
 }
