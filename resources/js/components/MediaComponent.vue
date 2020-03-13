@@ -19,8 +19,7 @@
                 </li>
             </ol>
         </nav>
-        <p v-if="files.length == 1" class="text-center">No se encontraron archivos para mostrar</p>
-        <div class="row" v-else>
+        <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12">
                 <div class="d-flex">
                     <ul id="files">
