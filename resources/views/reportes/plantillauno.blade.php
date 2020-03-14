@@ -41,15 +41,15 @@
     </style>
 </head>
 <body>
-    <img class="firstimg" src="{{public_path('/images/bg_reporte.png')}}" alt="">
+    <img class="firstimg" src="{{asset('/images/bg_reporte.png')}}" alt="">
     <div class="page-break"></div>
-    <img src="{{public_path('/images/bg-dos.png')}}" alt="" class="firstimg">
+    <img src="{{asset('/images/bg-dos.png')}}" alt="" class="firstimg">
     <p class="centrado">{{$descripcion}}</p>
     <div class="page-break"></div>
     {{-- {{$descripcion}} --}}
     @foreach ($capturas as $item)
-        <img src="{{public_path('/images/bg-tres.png')}}" alt="" class="firstimg">
-        <img src="{{public_path($item)}}" alt="" class="capturas">
+        <img src="{{asset('/images/bg-tres.png')}}" alt="" class="firstimg">
+        <img src="{{asset($item)}}" alt="" class="capturas">
         @if (!$loop->last)
             <div class="page_break"></div>
         @endif

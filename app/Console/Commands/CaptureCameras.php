@@ -52,7 +52,7 @@ class CaptureCameras extends Command
                 foreach ($pantallas as $key => $pantalla)
                 {
                     $url = 'http://' . $pantalla->link . '/axis-cgi/jpg/image.cgi';
-                    $carpeta=  'el_salvador/'.\Carbon\Carbon::now()->locale('es')->isoFormat('dddd').'/'.str_replace([' ','.',','],'_',$pantalla->name);
+                    $carpeta=  'el_salvador/'.\Carbon\Carbon::now()->locale('es')->isoFormat('dddd').'/'.str_replace([' ','.',','],'_',substr($pantalla->name,9));
                     $imageName = \Carbon\Carbon::now()->format('Y_m_d').strtotime(\Carbon\Carbon::now()).'.jpg';
                     while (@ob_end_clean());
                     header('Content-Type: multipart/x-mixed-replace; boundary=myboundary');

@@ -577,7 +577,7 @@ div {
     top: -3px;
 }
 .items_list{
-    width: 25%;
+    width: 33%;
 }
 .captura_select{
     cursor:pointer;
