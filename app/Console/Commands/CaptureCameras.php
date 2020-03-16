@@ -65,12 +65,15 @@ class CaptureCameras extends Command
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
                     curl_setopt($ch, CURLOPT_USERPWD, 'yoda:iwyoda');
                     $image= curl_exec($ch);
-                    if(!empty($image))
-                    {
-                        $img = Image::make($image)->encode('jpg',30);
-                        Storage::disk('public')->put($carpeta.'/'.$imageName,$img);
-                    }else{
-                        Log::info('La pantalla no respondio despues de los 25 segundos: '.$pantalla->name);
+                    if (!curl_errno($ch)) {
+                        switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+                          case 200:  
+                                $img = Image::make($image)->encode('jpg',30);
+                                Storage::disk('public')->put($carpeta.'/'.$imageName,$img);
+                            break;
+                          default:
+                                Log::info('La pantalla no respondio despues de los 25 segundos: '.$pantalla->name);
+                        }
                     }
                 }
             }
