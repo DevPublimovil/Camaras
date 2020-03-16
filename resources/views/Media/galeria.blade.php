@@ -46,5 +46,5 @@
     </style>
 @endsection
 @section('content')
-    <media-component :paises="{{$paises}}"></media-component>
+    <media-component :paises="{{$paises}}" :countryselect="{{Auth::user()->country_id}}"></media-component>
 @endsection

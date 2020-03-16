@@ -49,6 +49,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12">
+                <div class="sticky-top ">
                 <div class="right_details">
                     <div v-if="selected_files.length == 1 " class="right_details">
                         <div class="detail_img">
@@ -96,6 +97,7 @@
                             </ul>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -160,6 +162,9 @@ export default {
                 default: function() {
                     return [];
                 }
+            },
+            countryselect:{
+                type: Number,
             },
             basePath: {
                 type: String,
@@ -548,6 +553,20 @@ export default {
             this.selectFiles = [];
         }else{
             this.selectFiles = datosDB;  
+        }
+
+        if(this.countryselect == 1){
+            this.current_folder = '/el_salvador/'
+        }else if(this.countryselect == 2){
+            this.current_folder = '/guatemala/'
+        }else if(this.countryselect == 3){
+            this.current_folder = '/costa_rica/'
+        }else if(this.countryselect == 4){
+            this.current_folder = '/honduras/'
+        }else if(this.countryselect == 5){
+            this.current_folder = '/panama/'
+        }else{
+            this.current_folder = '/nicaragua/'
         }
     },
 }
