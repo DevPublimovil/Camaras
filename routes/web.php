@@ -35,6 +35,7 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::resource('/trafico','TraficoController');
         Route::resource('/ventas','VentasController');
         Route::get('/medios', 'MediaController@index')->name('medios.index');
+        Route::post('/medios', 'MediaController@store')->name('medios.store');
         Route::post('/medios/files', 'MediaController@files')->name('medios.files');
         Route::get('/apiventas', 'VentasController@apiventas')->name('ventas.datatables');
         Route::get('/contactos','MediacamController@contactos')->name('mediacam.contacts');

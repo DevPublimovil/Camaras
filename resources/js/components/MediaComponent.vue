@@ -4,7 +4,7 @@
             <div class="d-flex col-lg-4 col-md-4 col-xs-12 col-12 text-center justify-content-center align-items-center" id="circuito" >
                 <h3 class="text-uppercase">Circuito {{selectCountry}}</h3>
             </div>
-            <div class="col-lg-8 col-md-8 col-xs-12 col-12 text-center justify-content-center align-items-center" >
+            <div class="col-lg-8 col-md-8 col-xs-12 col-12 text-center justify-content-center align-items-center mb-4" >
                 <ul class="nav justify-content-center">    
                     <li class="nav-item" v-for="(pais, index) in paises " :key="pais.id" style="width:15%">
                         <a class="nav-link active" href="#" @click="changecountry(pais.id)"> <img :src="'../'+pais.image" class="img-fluid rounded-circle cameras" :alt="pais.name"></a>
@@ -13,7 +13,12 @@
             </div>
         </div>
         <nav aria-label="breadcrumb">
+            
             <ol class="breadcrumb">
+                <li>
+                    <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
+                    <input type="file" id="capturas_upload" style="display:none" @change="uploadImage()" accept="image/*" multiple>
+                </li>
                 <li class="breadcrumb-item" v-for="(folder, i) in getCurrentPath()" v-on:click="setCurrentPath(i)">
                     {{ folder }}
                 </li>
@@ -29,7 +34,7 @@
                                     <template v-if="fileIs(file, 'image')"  >
                                         <img :src="file.path" width="65px">
                                     </template>
-                                    <template v-else="fileIs(file, 'folder')">
+                                    <template v-else-if="fileIs(file, 'folder')">
                                         <i class="icon fa fa-folder" aria-hidden="true"></i>
                                     </template>
                                 </div>
@@ -45,17 +50,22 @@
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12">
                 <div class="right_details">
-                    <div v-if="selected_files.length == 1" class="right_details">
+                    <div v-if="selected_files.length == 1 " class="right_details">
                         <div class="detail_img">
                             <div v-if="fileIs(selected_file, 'image')">
                                 <img class="img-fluid img-thumbnail" id="preview" :src="selected_file.path" />
                             </div>
-                            <div v-else="fileIs(selected_file, 'folder')" class="text-center">
+                            <div v-else-if="fileIs(selected_file, 'folder')" class="text-center">
                                 <div class="d-flex justify-content-around">
                                     <i class="icon fa fa-folder fa-5x mt-4" aria-hidden="true"></i>
                                 </div>
                                  <small>{{ selected_file.name }}</small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="right_details" v-else-if="relative_path != ''">
+                        <div class="detail_img">
+                            <img class="img-fluid img-thumbnail" id="preview" :src="imageselect" />
                         </div>
                     </div>
                     <div class="row mt-2" v-if="selectFiles.length > 0">
@@ -73,7 +83,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item captura_select p-1 m-1" v-for="(item, index) of selectFiles" >
                                     <div class="row">
-                                        <div class="col-11 " v-on:click="selectFile(item, $event)">
+                                        <div class="col-11 " v-on:click="selectImage(index)">
                                             {{'Captura '+parseInt(index+1)}} 
                                         </div>
                                         <div class="col-1">
@@ -121,8 +131,13 @@
                         <div class="modal-body">
                         <input type="hidden" name="_token" :value="csrf">
                         <div class="form-group" v-for="(file, index) in selectFiles" v-bind:key="index">
-                            <input type="hidden" name="imagenes[]" :value="file.path">
+                            <input type="hidden" name="imagenes[]" :value="file">
                         </div>
+                        <div class="form-group">
+                            <label for="marca">Marca:</label>
+                            <input type="text" class="form-control" name="marca" id="marca" required placeholder="Marca">
+                        </div>
+                        <label for="description">Descripción:</label>
                         <textarea class="form-control" name="descripcion" id="description" cols="30" rows="10" v-model="description"></textarea>
                         </div>
 
@@ -230,13 +245,17 @@ export default {
             selectCountry:'',
             selectFiles:[],
             description:'',
-            csrf:''
+            csrf:'',
+            relative_path:'',
         }
     },
 
     computed: {
             selected_file: function() {
                 return this.selected_files[0];
+            },
+            imageselect: function(){
+                return '/storage/'+this.relative_path;
             }
         },
     methods: {
@@ -290,18 +309,49 @@ export default {
         drop:function(event) {
             event.preventDefault();
             var data = event.dataTransfer.getData("Text");
-            this.selectFiles.push(this.files[data]);
-            localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
-            toastr.success('¡La captura ha sido agragada!')
+            this.selected_files.push(this.files[data]);
+            if(this.files[data] != null){
+                if(this.files[data].type != "folder"){
+                    this.selectFiles.push(this.files[data].relative_path);
+                    localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+                    toastr.success('¡La captura ha sido agragada!')
+                }else{
+                    toastr.error('Tienes que arrastrar una imagen');
+                }
+            }else{
+                toastr.error('Tienes que arrastrar una imagen');
+            }
         },
         isFileSelected: function(file) {
-            return this.selectFiles.includes(file)
+            return this.selected_files.includes(file)
+        },
+        selectImage(file){
+            this.relative_path = this.selectFiles[file];
         },
         deleteStorage(item){
             this.selectFiles.splice(item,1)
             localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
             toastr.success('La captura ha sido removida')
             //document.getElementById('preview').src = ''
+        },
+        uploadImage(){
+            var formData = new FormData();
+            var imagefile = document.querySelector('#capturas_upload');
+            for (let i = 0; i < imagefile.files.length; i++) {
+                formData.append("image[]", imagefile.files[i]);
+            }
+            axios.post('/mediacam/medios', formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            }).then(({data})=>{
+                for (let j = 0; j < data.length; j++) {
+                    const element = data[j];
+                    this.selectFiles.push(element);
+                    localStorage.setItem('capturas-vue', JSON.stringify(this.selectFiles));
+                }
+                toastr.success('¡Las capturas han sido agragadas!')
+            })
         },
         fileIs: function(file, type) {
             if (typeof file === 'string') {
@@ -320,12 +370,18 @@ export default {
             return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:80%; :80%;';
         },
         generarResporte(){
-            toastr.info('¡Espere un momento mientras se genera el reporte!')
-            $("#formDescription").submit();
-            document.getElementById('formDescription').reset();
-            $("#insertDescription").modal('hide');
-            localStorage.clear()
-            this.selectFiles = []
+            if($("#marca").val() != ''){
+                toastr.info('¡Espere un momento mientras se genera el reporte!')
+                $("#formDescription").submit();
+                document.getElementById('formDescription').reset();
+                $("#insertDescription").modal('hide');
+                localStorage.clear()
+                this.selectFiles = []
+            }else{
+                $("#marca").css("border","1px solid red");
+                $("#marca").focus();
+                toastr.error('La marca es requerida');
+            }
         },
         bytesToSize: function(bytes) {
             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -586,6 +642,9 @@ div {
 .captura_select:hover{
     background-color:#FC876E;
     color:#FFF
+}
+.breadcrumb-item:hover{
+    color:#FB3D14
 }
 .droptarget{
     display: flex;

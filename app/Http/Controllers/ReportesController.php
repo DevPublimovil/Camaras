@@ -9,14 +9,11 @@ class ReportesController extends Controller
 {
     public function generarReporte(Request $request)
     {
-        $paths = [];
-        foreach ($request->imagenes as $item){
-            $cadena = substr($item,22);
-            $paths []= $cadena ;
-        }
+        //print_r($request->all());
         $name = strtotime(\Carbon\Carbon::now());
         $data = [
-            'capturas' => $paths,
+            'capturas' => $request->imagenes,
+            'marca' => $request->marca,
             'descripcion' => $request->descripcion
         ];
         $pdf = \PDF::loadView('reportes.plantillauno', $data)->setPaper('A4', 'landscape');

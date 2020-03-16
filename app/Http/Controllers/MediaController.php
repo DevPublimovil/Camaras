@@ -73,5 +73,19 @@ class MediaController extends Controller
             'current_folder' => $dir
         ]);
     }
+    public function store(Request $request)
+    {
+        $files = $request->file('image');
+        $uploads  = [];
+        if($request->hasFile('image')):
+            foreach ($files as $key => $file):
+                $img = Image::make(\file_get_contents($file))->encode($file->getClientOriginalExtension(),30);
+                Storage::disk('public')->put('uploads/'.$file->getClientOriginalName(),$img);
+                $uploads[] = 'uploads/'.$file->getClientOriginalName();
+            endforeach;
+        endif;
+
+        return response()->json($uploads, 200);
+    }
 
 }

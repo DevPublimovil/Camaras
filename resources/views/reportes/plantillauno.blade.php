@@ -8,8 +8,12 @@
     <style>
         @page{
             margin: 0%;
-            padding: 0%
+            padding: 0%;
+            font-family: 'Anton', sans-serif;
+            color: orangered;
+            font-size: 30px
         }
+        @import url('https://fonts.googleapis.com/css?family=Anton&display=swap');
         .firstimg{
             width:100%;
             height:792px;
@@ -17,42 +21,43 @@
         }
         .centrado{
             position: absolute;
-            top: 53%;
-            left: 40%;
-            font-weight: 500;
-            transform: translate(-50%, -50%);
-            color: orangered;
-            font-size: 30px;
-            border-color:red 1px solid
+            top: 48.5%;
+            left: 13%;
+            width: 85%;
         }
         .capturas{
             position: absolute;
             top: 11%;
             left: 7%;
             width: 86%;
-            height: 600px;
+            height: 680px;
         }
-        /* html{
-            background-image: url('./images/bg_reporte.png');
-            max-width:100%;
-            height:auto
-        } */
+        .texto_descripcion{
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            max-height: 70%;
+            color: aliceblue;
+            text-align: center;
+        }
         .page_break { page-break-before: always; }
     </style>
 </head>
 <body>
-    <img class="firstimg" src="{{asset('/images/bg_reporte.png')}}" alt="">
+    <img class="firstimg" src="{{asset('/images/reporte/portada.jpg')}}" alt="">
     <div class="page-break"></div>
-    <img src="{{asset('/images/bg-dos.png')}}" alt="" class="firstimg">
-    <p class="centrado">{{$descripcion}}</p>
+    <img src="{{asset('/images/reporte/paginaintro.jpg')}}" alt="" class="firstimg">
+    <p class="centrado">Presentación de medios pautados para la marca {{$marca}}</p>
     <div class="page-break"></div>
-    {{-- {{$descripcion}} --}}
     @foreach ($capturas as $item)
-        <img src="{{asset('/images/bg-tres.png')}}" alt="" class="firstimg">
-        <img src="{{asset($item)}}" alt="" class="capturas">
-        @if (!$loop->last)
-            <div class="page_break"></div>
-        @endif
+        <img src="{{asset('/images/reporte/plantilla.jpg')}}" alt="" class="firstimg">
+        <img src="{{asset('storage/'.$item)}}" alt="" class="capturas">
+        <div class="page_break"></div>
     @endforeach
+    <img class="firstimg" src="{{asset('/images/reporte/final.jpg')}}" alt="">
+    <div class="texto_descripcion">
+        {{$descripcion}}
+    </div>
 </body>
 </html>

@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\CaptureCameras',
+        'App\Console\Commands\CaptureCamarasDos',
+        'App\Console\Commands\CaptureCamarasGuate',
+        'App\Console\Commands\CaptureCamarasHonduras',
     ];
 
     /**
