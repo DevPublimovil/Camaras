@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
 use App\Country;
+use Auth;
 
 class MediaController extends Controller
 {
@@ -24,7 +25,11 @@ class MediaController extends Controller
 
     public function index()
     {
-        $paises = Country::orderBy('name','ASC')->get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 6){
+            $paises = Country::orderBy('name','ASC')->get();
+        }else if(Auth::user()->role_id == 4 || Auth::user()->role_id == 5){
+            $paises = Country::where('id',Auth::user()->country_id)->orderBy('name','ASC')->get();
+        }
         return view('Media.galeria', compact('paises'));
     }
 

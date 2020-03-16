@@ -47,7 +47,7 @@ class CaptureCamarasGuate extends Command
         $pantallas = Pantalla::where('country_id',2)->select('name','link')->orderBy('id','ASC')->get();
 
         $ch = curl_init();
-            for ($i=0; $i < 25; $i++)
+            for ($i=0; $i < 60; $i++)
             {
                 foreach ($pantallas as $key => $pantalla)
                 {
