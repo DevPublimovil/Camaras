@@ -27,9 +27,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('capture:cameras')->everyMinute();
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('capture:cameras');
+        $schedule->command('capture:dos');
+        $schedule->command('capture:guate');
+        $schedule->command('capture:honduras');
     }
 
     /**
