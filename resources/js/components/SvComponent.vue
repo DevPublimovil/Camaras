@@ -2,7 +2,14 @@
 <div class="cameras mt-4">
     <div class="row justify-content-center" v-if="screns.length > 0">
         <div class="col-6">
-             <input class="form-control" type="search" v-model="name" placeholder="Buscar Pantallas" aria-label="Search">
+            <div class="d-flex bd-highlight">
+                <div class=" flex-grow-1 bd-highlight"><input class="form-control" type="search" v-model="name" placeholder="Buscar Pantallas" aria-label="Search"></div>
+                <div class=" bd-highlight">
+                    <button class="btn btn-search" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row mt-4" v-if="user.status == 'activo'">
@@ -63,5 +70,8 @@
     width: 100%;
     height: 20vw;
     object-fit: cover;
+}
+.btn-search{
+    background-color:#FF5733
 }
 </style>

@@ -26,19 +26,29 @@
         </nav>
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12">
+                <div class="d-flex bd-highlight">
+                    <div class=" flex-grow-1 bd-highlight">
+                        <input class="form-control" type="search" v-model="name" placeholder="Buscar Pantallas" aria-label="Search">
+                    </div>
+                    <div class=" bd-highlight">
+                        <button class="btn btn-search" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="d-flex">
                     <ul id="files">
-                        <li class="items_list" v-for="(file, index) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart">
+                        <li class="items_list" v-for="(file, index) in  searchPantalla" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart">
                             <div :class="'file_link '+ (isFileSelected(file) ? 'selected' : '')" >
                                 <div class="link_icon" >
-                                    <template v-if="fileIs(file, 'image')"  >
-                                        <img :src="file.path" width="65px">
+                                    <template v-if="fileIs(file, 'image')">
+                                        <img :src="file.path" width="100%" height="auto" :id="index" draggable="true" v-on:dragstart="dragStart">
                                     </template>
                                     <template v-else-if="fileIs(file, 'folder')">
                                         <i class="icon fa fa-folder" aria-hidden="true"></i>
                                     </template>
                                 </div>
-                                <div class="details pl-1" >
+                                <div class="details pl-1" v-if="!fileIs(file, 'image')">
                                     <div :class="file.type">
                                         <h4>{{ file.name }}</h4>
                                     </div>
@@ -49,14 +59,14 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12">
-                <div class="sticky-top ">
+                <div class="fijo-top ">
                 <div class="right_details">
                     <div v-if="selected_files.length == 1 " class="right_details">
                         <div class="detail_img">
-                            <div v-if="fileIs(selected_file, 'image')">
+                            <!--<div v-if="fileIs(selected_file, 'image')">
                                 <img class="img-fluid img-thumbnail" id="preview" :src="selected_file.path" />
-                            </div>
-                            <div v-else-if="fileIs(selected_file, 'folder')" class="text-center">
+                            </div>-->
+                            <div v-if="fileIs(selected_file, 'folder')" class="text-center">
                                 <div class="d-flex justify-content-around">
                                     <i class="icon fa fa-folder fa-5x mt-4" aria-hidden="true"></i>
                                 </div>
@@ -252,6 +262,7 @@ export default {
             description:'',
             csrf:'',
             relative_path:'',
+            name:'',
         }
     },
 
@@ -261,6 +272,9 @@ export default {
             },
             imageselect: function(){
                 return '/storage/'+this.relative_path;
+            },
+            searchPantalla(){
+               return this.files.filter((pantalla) => pantalla.name.toLowerCase().includes(this.name));
             }
         },
     methods: {
@@ -677,5 +691,11 @@ div {
 }
 .breadcrumb-item{
     cursor:pointer
+}
+.fijo-top{
+    position:-webkit-sticky;
+    position:sticky;
+    top:100px;
+    z-index:1020
 }
 </style>
