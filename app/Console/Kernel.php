@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CaptureCamarasDos',
         'App\Console\Commands\CaptureCamarasGuate',
         'App\Console\Commands\CaptureCamarasHonduras',
+        'App\Console\Commands\DeleteCapture',
     ];
 
     /**

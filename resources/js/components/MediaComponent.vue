@@ -434,6 +434,7 @@ export default {
             if (file.type == 'folder') {
                 this.current_folder += file.name+"/";
                 this.getFiles();
+                this.name = ''
             } else if (this.hidden_element) {
                 this.addFileToInput(file);
             } else {
@@ -443,11 +444,13 @@ export default {
                     // ...
                 }
             }
+            
         },
         selectFile: function(file, e) {
             if ((!e.ctrlKey && !e.metaKey && !e.shiftKey) || !this.allowMultiSelect) {
                 this.selected_files = [];
             }
+
 
             if (e.shiftKey && this.allowMultiSelect && this.selected_files.length == 1) {
                 var index = null;
@@ -479,17 +482,6 @@ export default {
             if (index === -1) {
                 this.selected_files.push(file);
             }
-
-            if (this.selected_files.length == 1) {
-                var vm = this;
-                Vue.nextTick(function () {
-                    if (vm.fileIs(vm.selected_file, 'video')) {
-                        vm.$refs.videoplayer.load();
-                    } else if (vm.fileIs(vm.selected_file, 'audio')) {
-                        vm.$refs.audioplayer.load();
-                    }
-                });
-            }
         },
         getCurrentPath: function() {
             var path = this.current_folder.replace(this.basePath, '').split('/').filter(function (el) {
@@ -516,50 +508,47 @@ export default {
         this.getFiles();
         var vm = this;
 
-        if (this.element != '') {
-            this.hidden_element = document.querySelector(this.element);
-            if (!this.hidden_element) {
-                console.error('Element "'+this.element+'" could not be found.');
-            } else {
-                if (this.maxSelectedFiles > 1 && this.hidden_element.value == '') {
-                    this.hidden_element.value = '[]';
-                }
-            }
-        }
-
-
-
-        this.onkeydown = function(evt) {
-            evt = evt || window.event;
-            if (evt.keyCode == 39) {
-                evt.preventDefault();
-                for (var i = 0, file; file = vm.files[i]; i++) {
-                    if (file === vm.selected_file) {
-                        i = i + 1; // increase i by one
-                        i = i % vm.files.length;
-                        vm.selectFile(vm.files[i], evt);
-                        break;
+        /* window.addEventListener("keypress", e => {
+            console.log(e.keyCode);
+        }); */
+        document.onkeydown = function(e) { 
+            switch (e.keyCode) { 
+                case 37:
+                    let index = vm.files.indexOf(vm.selected_files[0])
+                    let nuevoindex = parseInt(index-1)
+                    if(nuevoindex >= 0){
+                        vm.selected_files = []
+                        vm.selected_files.push(vm.files[nuevoindex])
+                         $('html, body').animate({scrollTop: '-=50px'}, 20);
                     }
-                }
-            } else if (evt.keyCode == 37) {
-                evt.preventDefault();
-                for (var i = 0, file; file = vm.files[i]; i++) {
-                    if (file === vm.selected_file) {
-                        if (i === 0) {
-                            i = vm.files.length;
-                        }
-                        i = i - 1;
-                        vm.selectFile(vm.files[i], evt);
-                        break;
+                    break; 
+                case 38: 
+                    let index2 = vm.files.indexOf(vm.selected_files[0])
+                    let nuevoindex2 = parseInt(index2-3)
+                    if(nuevoindex2 >= 0 ){
+                        vm.selected_files = []
+                        vm.selected_files.push(vm.files[nuevoindex2])
                     }
-                }
-            } else if (evt.keyCode == 13) {
-                evt.preventDefault();
-                if (evt.target.tagName != 'INPUT') {
-                    vm.openFile(vm.selected_file, null);
-                }
-            }
-        };
+                    break; 
+                case 39: 
+                    let index3 = vm.files.indexOf(vm.selected_files[0])
+                    let nuevoindex3 = parseInt(index3+1)
+                    if(nuevoindex3 < vm.files.length){
+                        vm.selected_files = []
+                        vm.selected_files.push(vm.files[nuevoindex3])
+                        $('html, body').animate({scrollTop: '+=50px'}, 20);
+                    }
+                    break; 
+                case 40: 
+                    let index4 = vm.files.indexOf(vm.selected_files[0])
+                    let nuevoindex4 = parseInt(index4+3)
+                    if(nuevoindex4 < vm.files.length){
+                        vm.selected_files = []
+                        vm.selected_files.push(vm.files[nuevoindex4])
+                    }
+                    break; 
+            } 
+        }; 
     },
     created() {
         let datosDB = JSON.parse(localStorage.getItem('capturas-vue'));
