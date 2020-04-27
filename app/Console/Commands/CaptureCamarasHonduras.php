@@ -47,7 +47,7 @@ class CaptureCamarasHonduras extends Command
         $pantallas = Pantalla::where('country_id',4)->orWhere('country_id',6)->select('name','link','country_id')->orderBy('id','ASC')->get();
 
         $ch = curl_init();
-            for ($i=0; $i < 60; $i++)
+            for ($i=0; $i < 80; $i++)
             {
                 foreach ($pantallas as $key => $pantalla)
                 {

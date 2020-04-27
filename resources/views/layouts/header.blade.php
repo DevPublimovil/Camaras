@@ -17,7 +17,7 @@
         <a  class="nav-link dropdown-toggle d-block d-md-none" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
             <img src="{{ asset('storage/'.Auth::user()->avatar) }}" class="img-circle profile-img img-hidden" style="width:35px;height:30px;" alt="user profile">
         </a>
-          <div class="dropdown-menu dropdown-menu-right " aria-labelledby="dLabel" style="padding:10px;width:300px">
+          <div class="dropdown-menu dropdown-menu-right " aria-labelledby="dLabel" style="padding:10px;width:400px">
               <div class="row">
                 <div class="col-2"><img src="{{ asset('storage/'.Auth::user()->avatar) }}" width="100%" height="auto" class="img-circle" style="width:60px;height:60px;margin-left:5px;" alt=""></div>
                 <div class="col-10" >

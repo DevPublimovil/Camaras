@@ -48,7 +48,7 @@ class MediacamController extends Controller
         //envia el mensaje y lo adjunta a la vista mails.notification que se encuentra en resources/views/
         Mail::send('emails.notificacion',[
             'usuario' => $usuario,
-            'empresa' => $empresa, 
+            'empresa' => $empresa,
             'pais' => $pais,
             'contenido' => $contenido], function($mail) use ($asunto){
                 $mail->from(Auth::user()->email, 'Mediacam');

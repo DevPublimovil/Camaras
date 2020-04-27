@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\PautaResource;
+use App\Http\Resources\PautaCountryResource as Countries;
+use App\Pauta;
+use Carbon\Carbon  as Fecha;
 
 class PantallaController extends Controller
 {
@@ -22,58 +27,37 @@ class PantallaController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->fecha_fin <= \Carbon\Carbon::now() && Auth::user()->role_id == 3)
+        $user = Auth::user()->load('country');
+        //verifico si el usuario es cliente
+        if($user->role_id == 3)
         {
-            $user = User::find(Auth::user()->id);
-            $user->update(['status' => 'no-activo']);
+            //verifico si el usuario tiene pautas activas
+            if(count($user->pautas_cliente))
+            {
+                $paises = PantallaCliente::select('countries.id','countries.name','countries.image')->join('pautas','pautas.id','pantalla_clientes.pauta_id')
+                            ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
+                            ->join('countries','countries.id','pantallas.country_id')
+                            ->where('pautas.cliente_id',$user->id)->distinct()->get();
+            }else{
+                return redirect()->route('mediacam.contacts');
+            }
+        }else if($user->role_id == 1 || $user->role_id == 6)
+        {
+            $paises = Country::orderBy('name','ASC')->get();
+        }else
+        {
+            $paises = Country::where('id', $user->country_id)->get();
+        }
+
+        if(Auth::user()->hasPermission('view_cameras'))
+        {
+            return view('pantallas.index', compact('user','paises'));
+        }
+        else
+        {
             return redirect()->route('mediacam.contacts');
         }
-        //verifica si el usuario tiene los permisos
-       if(Auth::user()->hasPermission('view_cameras' && Auth::user()->status == 'activo'))
-       {
-           //busca el usuario y su pais
-           $user = User::find(Auth::user()->id)->load('country');
-
-           //verifica si el usuario tiene el rol de cliente
-           if($user->role_id == 3)
-           {
-               //lista los paises en donde el cliente tiene articulos
-                $paises = PantallaCliente::select('countries.id','countries.name','countries.image')
-                ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
-                ->join('countries','countries.id','pantallas.country_id')
-                ->where('pantalla_clientes.user_id',$user->id)
-                ->where('pantallas.status','disponible')
-                ->groupBy('countries.id','countries.name','countries.image')
-                ->get();
-            //lista los articulos
-                $pantallas = PantallaCliente::select('pantallas.*')
-                    ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
-                    ->where('pantalla_clientes.user_id',$user->id)
-                    ->where('pantallas.country_id',$user->country->id)
-                    ->get();
-                return view('pantallas.index', compact('user','paises','pantallas'));
-                //verifica si el usuario es trafico
-           }
-           else if($user->role_id == 4 || $user->role_id == 5)
-           {
-               $pantallas = Pantalla::where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
-               return view('pantallas.index', compact('pantallas','user'));
-               //verifica si el usuario es administrador
-           }
-           else if($user->role_id == 1 || $user->role_id == 6)
-           {
-                $paises = Country::orderBy('name','ASC')->get();
-                
-                $pantallas = Pantalla::select('pantallas.*')
-                    ->where('pantallas.country_id',$user->country->id)
-                    ->get();
-                
-                return view('pantallas.index', compact('user','pantallas','paises'));
-           }
-       }
-       else{
-           return back();
-       }
+       
     }
 
     /**
@@ -118,8 +102,26 @@ class PantallaController extends Controller
      */
     public function show($id)
     {
+        //busco el pais
+        $pais = Country::find($id);
 
+        //busco las pantallas de ese pais en relacion al usuario que las solicita
+
+        if(Auth::user()->role_id == 3)
+        {
+            $pantallas = PantallaCliente::select('pantallas.*')->join('pautas','pautas.id','pantalla_clientes.pauta_id')
+                ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
+                ->join('countries','countries.id','pantallas.country_id')
+                ->where('pantallas.country_id',$pais->id)
+                ->where('pautas.cliente_id', Auth::id())
+                ->distinct()->get();
+        }
+        else
+        {
+            $pantallas = Pantalla::where('country_id', $pais->id)->orderBy('name','ASC')->get();
+        }
         
+        return $pantallas;
     }
 
     /**

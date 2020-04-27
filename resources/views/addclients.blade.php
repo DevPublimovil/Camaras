@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="@if(Auth::user()->hasPermission('list_clients_ventas') || Auth::user()->hasPermission('add_client_venta')) {{route('ventas.store')}} @else {{route('trafico.store')}} @endif " method="POST">
+          <form action="@if(Auth::user()->hasPermission('list_clients_ventas') || Auth::user()->hasPermission('add_client_venta')) {{route('ventaspublimovil.store')}} @else {{route('trafico.store')}} @endif " method="POST">
               @csrf
               <div class="form-group">
                 <label for="name">Nombre</label>
@@ -44,28 +44,6 @@
                   @foreach ($paises as $pais)
                     <option value="{{$pais->id}}" @if($pais->id == Auth::user()->country_id) selected @endif @if(!Auth::user()->hasPermission('store_articles')) disabled @endif>{{$pais->name}}</option>
                   @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="tiempo_vida">Tiempo activo</label>
-                <select name="tiempo_vida" id="tiempo_vida" class="form-control form-control-pu">
-                    <?php 
-                      for($i = 5; $i<=30; $i++){
-                        echo '<option value="'.$i.'">'.$i .' dias</option>';
-                      }
-                    ?>
-                    <option value="60">2 meses</option>
-                    <option value="90">3 meses</option>
-                    <option value="120">4 meses</option>
-                    <option value="150">5 meses</option>
-                    <option value="180">6 meses</option>
-                    <option value="210">7 meses</option>
-                    <option value="240">8 meses</option>
-                    <option value="270">9 meses</option>
-                    <option value="300">10 meses</option>
-                    <option value="330">11 meses</option>
-                    <option value="360">1 año</option>
-                    <option value="720">2 años</option>
                 </select>
               </div>
               <div class="form-group text-center">

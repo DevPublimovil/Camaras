@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
 use App\Country;
 
 class User extends \TCG\Voyager\Models\User
@@ -39,4 +40,19 @@ class User extends \TCG\Voyager\Models\User
         return $this->belongsTo(Country::class);
     }
 
+    public function pautas_cliente()
+    {
+        return $this->hasMany('App\Pauta', 'cliente_id', 'id');
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 }

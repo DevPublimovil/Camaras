@@ -12,6 +12,11 @@
                     {{ session('status') }}
                 </div>
             @endif
+            @if (session('warning'))
+                <div class="alert alert-warning">
+                    {{ session('warning') }}
+                </div>
+            @endif
         </div>
     </div>
     <div class="row justify-content-center">
@@ -76,7 +81,7 @@
 
                 "processing": true,
                 "serverSide": true,
-                "ajax": '{{ route('ventas.datatables') }}',
+                "ajax": '{{ route('ventaspublimovil.datatables') }}',
                 "columns": [
                 { "data": "user.name" },
                 { "data": "user.email" },

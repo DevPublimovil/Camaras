@@ -37,10 +37,10 @@ Vue.component('sv-component', require('./components/SvComponent.vue').default);
 Vue.component('contact-map', require('./components/ContactMap.vue').default);
 Vue.component('svg-icon', require('./components/SvgIcon.vue').default);
 Vue.component('default-component', require('./components/DefaultComponent.vue').default);
-Vue.component('trafico-component', require('./components/TraficoComponent.vue').default);
 Vue.component('client-component', require('./components/ClientComponent.vue').default);
 Vue.component('media-component', require('./components/MediaComponent.vue').default);
 Vue.component('InfinitiLoading', require('vue-infinite-loading').default);
+Vue.component('agenda-component', require('./components/AgendaComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -56,5 +56,14 @@ const app = new Vue({
         ver(pantalla,enlace){
             this.$modal.show('modal-camara',{iframe:enlace,id:pantalla});
         },
+        eliminarPantalla(pantalla)
+        {
+            axios.delete("/mediacam/trafico/" + pantalla).then(({data})=>{
+                toastr.success('¡La pantalla ha sido eliminada de tu pauta!')
+                window.location.reload();
+            }).catch(({response})=>{
+                toastr.error('¡Ocurrió un error, intentalo más tarde!')
+            })
+        }
     }
 });

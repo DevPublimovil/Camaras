@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class UpdateTableAtPantallaClientes extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('pantalla_clientes', function (Blueprint $table) {
+            $table->dropForeign('pantalla_clientes_user_id_foreign');
+            $table->dropColumn('user_id');
+            $table->unsignedBigInteger('pauta_id')->nullable()->after('pantalla_id');
+
+            $table->foreign('pauta_id')->references('id')->on('pautas')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('pantalla_clientes', function($table) {
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+         });
+    }
+}

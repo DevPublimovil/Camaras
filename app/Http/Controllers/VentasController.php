@@ -9,6 +9,7 @@ use App\Country;
 use DataTables;
 use App\User;
 use \Carbon\Carbon as Fecha;
+use Illuminate\Support\Facades\Mail;
 
 class VentasController extends Controller
 {
@@ -45,11 +46,17 @@ class VentasController extends Controller
         $user = User::where('email',$request->email)->first();
         if($user)
         {
-            $venta = Venta::create([
-                'cliente_id' => $user->id,
-                'vendedor_id' => Auth::id()
-            ]);
-            return back()->with('status', 'El email ingresado ya existia, se agregó a tu lista de clientes. Debes solicitar la contraseña a IT');
+            $cliente_venta = Venta::where('cliente_id',$user->id)->first();
+            if($cliente_venta)
+            {
+                return back()->with('warning', '¡Ya posees un cliente en tu lista con el correo ingresado!');
+            }else{
+                $venta = Venta::create([
+                    'cliente_id' => $user->id,
+                    'vendedor_id' => Auth::id()
+                ]);
+                return back()->with('status', 'El email ingresado ya existia, se agregó a tu lista de clientes');
+            }
         }else{
             $cliente = User::create([
                 'name' => $request->name,
@@ -64,6 +71,8 @@ class VentasController extends Controller
                 'cliente_id' => $cliente->id,
                 'vendedor_id' => Auth::id()
             ]);
+        
+            $this->enviarCredenciales($cliente, $request->password);
 
             return back()->with('status','El cliente fue creado correctamente!');
         }
@@ -132,5 +141,21 @@ class VentasController extends Controller
         }else{
             abort(403);
         }
+    }
+
+    public function enviarCredenciales($cliente, $password)
+    {
+        //creamos el asunto del correo
+        $asunto = 'credenciales para cliente ' . $cliente->name;
+
+        //creamos el correo
+        Mail::send('emails.credencialescliente',[
+            'cliente' => $cliente,
+            'password' => $password], function($mail) use ($asunto){
+                $mail->from('mediacam@grupopublimovil.com', 'Mediacam');
+                $mail->to(Auth::user()->email);
+                $mail->subject($asunto);
+
+        });
     }
 }

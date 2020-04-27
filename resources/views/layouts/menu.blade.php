@@ -27,7 +27,7 @@
           @endif
           @if(Auth::user()->hasPermission('list_clients') || Auth::user()->hasPermission('list_clients_ventas'))
           <li class="nav-item">
-            <a href="@if(Auth::user()->hasPermission('list_clients_ventas')) {{route('ventas.index')}} @else {{route('trafico.index')}} @endif" class="nav-link">
+            <a href="@if(Auth::user()->hasPermission('list_clients_ventas')) {{route('ventaspublimovil.index')}} @else {{route('trafico.index')}} @endif" class="nav-link">
               <i class="nav-icon fa fa-user"></i>
               <p>
                 Clientes

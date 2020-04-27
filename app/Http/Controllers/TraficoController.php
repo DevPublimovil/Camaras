@@ -11,6 +11,7 @@ use App\Http\Requests\StoreClientRequest;
 use App\Country;
 use App\PantallaCliente;
 use App\Venta;
+use App\Pauta;
 
 class TraficoController extends Controller
 {
@@ -89,22 +90,8 @@ class TraficoController extends Controller
      */
     public function show($id)
     {
-        //busca el cliente y retorna la vista con los articulos para agregar
         $client = User::find($id);
-        $articulos = PantallaCliente::select('pantallas.*','pantalla_clientes.created_at as fecha','pantalla_clientes.id as articulo')
-            ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
-            ->where('pantalla_clientes.user_id',$client->id)
-            ->orderBy('pantalla_clientes.created_at','DESC')
-            ->get();
-        if(Auth::user()->hasPermission('store_articles'))
-        {
-            $pantallas = Pantalla::where('status','disponible')->orderBy('name','ASC')->get();
-        }
-        else
-        {
-            $pantallas = Pantalla::where('status','disponible')->where('country_id',Auth::user()->country_id)->orderBy('name','ASC')->get();
-        }
-        return view('pantallas.addArticulos',compact('client','pantallas','articulos'));
+        return view('pantallas.addArticulos',compact('client'));
     }
 
     /**
@@ -116,14 +103,13 @@ class TraficoController extends Controller
     public function edit($id)
     {
         //busca el usuario y su pais junto con los articulos del cliente
-        $user = User::find($id)->load('country');
-        $articulos = PantallaCliente::select('pantallas.*','pantalla_clientes.created_at as fecha','pantalla_clientes.id as articulo')
-            ->join('pantallas','pantallas.id','pantalla_clientes.pantalla_id')
-            ->where('pantalla_clientes.user_id',$user->id)
-            ->orderBy('pantalla_clientes.created_at','DESC')
-            ->get();
+        $cliente= User::find($id)->load('country');
+
+        $pautas = Pauta::where('cliente_id', $cliente->id)->orderBy('created_at','DESC')->with(['pantallas' => function($query){
+            $query->with(['pantalla:id,name,link'])->get();
+        }])->get();
             
-        return view('pantallas.editArticulos',compact('user','articulos'));
+        return view('pantallas.editArticulos',compact('cliente','pautas'));
     }
 
     /**
@@ -150,6 +136,6 @@ class TraficoController extends Controller
         $articulo = PantallaCliente::find($id);
         $articulo->delete();
 
-        return back()->with('status','El artículo se eliminó correctamente');
+        return;
     }
 }

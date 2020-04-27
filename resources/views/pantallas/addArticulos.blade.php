@@ -10,7 +10,9 @@
             @endif
         </div>
     </div>
-    <select-pantalla :articulos="{{$pantallas}}" :cliente="{{$client}}" :user="{{Auth::user()->role_id}}"></select-pantalla>
+
+    <agenda-component  :cliente="{{$client}}"></agenda-component>
+    {{-- <select-pantalla :articulos="{{$pantallas}}" :cliente="{{$client}}" :user="{{Auth::user()->role_id}}"></select-pantalla>
 
     @if(isset($articulos))
         <div class="row justify-content-center">
@@ -47,5 +49,5 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 @endsection

@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CaptureCamarasGuate',
         'App\Console\Commands\CaptureCamarasHonduras',
         'App\Console\Commands\DeleteCapture',
+        'App\Console\Commands\PautasVencidas',
     ];
 
     /**
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('capture:dos');
         $schedule->command('capture:guate');
         $schedule->command('capture:honduras');
+        $schedule->command('pautas:vencidas');
     }
 
     /**

@@ -77,7 +77,7 @@
                 @endif
             </div>
         </div>
-        @if(Auth::user()->status == 'no-activo')
+        @if($user->role_id == 3 && count($user->pautas_cliente) == 0)
         <div class="row justify-content-center">
             <div class="col-10">
                     <div class="alert alert-warning" >

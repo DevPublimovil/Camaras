@@ -33,11 +33,14 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::get('/profileuser','MediacamController@profile')->name('mediacam.profile');
         Route::resource('/clients','PantallaController');
         Route::resource('/trafico','TraficoController');
-        Route::resource('/ventas','VentasController');
+        Route::resource('/apipantallas', 'ApiPantallasController');
+        Route::resource('/pautas', 'PautasController');
+        Route::get('/listpautas/{id}', 'PautasController@listpautas');
+        Route::resource('/ventaspublimovil','VentasController');
         Route::get('/medios', 'MediaController@index')->name('medios.index');
         Route::post('/medios', 'MediaController@store')->name('medios.store');
         Route::post('/medios/files', 'MediaController@files')->name('medios.files');
-        Route::get('/apiventas', 'VentasController@apiventas')->name('ventas.datatables');
+        Route::get('/apiventas', 'VentasController@apiventas')->name('ventaspublimovil.datatables');
         Route::get('/contactos','MediacamController@contactos')->name('mediacam.contacts');
         Route::post('/envio','MediacamController@contactar')->name('mediacam.contacto');
         Route::post('pantalla','PantallaController@changescren')->name('pantallas.change');

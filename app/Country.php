@@ -11,4 +11,9 @@ class Country extends Model
     public function users(){
         return $this->hasMany(User::class);
     }
+
+    public function pantallas()
+    {
+        return $this->hasMany('App\Pantallas', 'country_id', 'id');
+    }
 }
