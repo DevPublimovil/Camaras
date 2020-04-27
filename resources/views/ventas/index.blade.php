@@ -41,7 +41,6 @@
                                 <th>Correo</th>
                                 <th>País</th>
                                 <th>Fecha de ingreso</th>
-                                <th>Fecha vencimiento</th>
                                 <th>Opcion</th>
                             </tr>
                             </thead>
@@ -87,7 +86,6 @@
                 { "data": "user.email" },
                 { "data": "user.country.name", "searchable": false },
                 { "data": "user.created_at" },
-                { "data": "user.fecha_fin" },
                 { "data": "actions"},
                 ]
             });

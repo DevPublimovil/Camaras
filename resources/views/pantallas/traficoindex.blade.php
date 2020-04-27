@@ -35,7 +35,6 @@
                                 <th>Nombre</th>
                                 <th>Correo</th>
                                 <th>Fecha de ingreso</th>
-                                <th>Fecha vencimiento</th>
                                 <th>Opcion</th>
                             </tr>
                             </thead>
@@ -80,7 +79,6 @@
                 { "data": "name" },
                 { "data": "email" },
                 { "data": "created_at" },
-                { "data": "fecha_fin" },
                 { "data": "actions"},
                 ]
             });
