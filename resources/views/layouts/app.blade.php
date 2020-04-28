@@ -100,7 +100,7 @@
        <script>
             setTimeout(function() {
                 $('.loader-bg').fadeToggle();
-            },3000);
+            },2000);
         </script>
        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>

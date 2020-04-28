@@ -108,8 +108,8 @@
             <p class="p-0 mt-4 mb-0" v-if="vendedor.length > 0"><span class="badge badge-pill badge-light"><b>Cliente: </b>{{cliente.name}}</span> <span class="badge badge-pill badge-light" v-for="item in vendedor" :key="item.id"><b>Vendedor: </b> {{item.vendedor}}</span></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" @click="updateOrCreateEvent()">Guardar</button>
+            <button type="button" v-if="update" class="btn btn-sm btn-danger" @click="eliminarPauta()">Eliminar</button>
+            <button type="button" class="btn btn-sm btn-primary" @click="updateOrCreateEvent()">Guardar</button>
           </div>
         </div>
       </div>
@@ -124,6 +124,7 @@ import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
+import swal from 'sweetalert';
 
 // must manually include stylesheets for each plugin
 import "@fullcalendar/core/main.css";
@@ -272,6 +273,35 @@ export default {
           this.evento = ''
           this.startdate = ''
           this.enddate = ''
+        },
+        eliminarPauta(){
+          let vm = this
+          swal({
+            title: "¿Estás seguro?",
+            text: "Una vez eliminada la pauta, ¡No podras recuperarla!",
+            icon: "warning",
+            buttons: {
+              cancel: true,
+              confirm: {
+                value: true,
+                text: "Aceptar"
+              },
+            },
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              axios.delete('/mediacam/pautas/' + vm.evento).then((data)=>{
+                $("#articuloModal").modal('hide');
+                swal("¡La pauta se ha eliminado con éxito!", {
+                  icon: "success",
+                });
+                vm.getAgenda()
+              })
+            }else{
+              $("#articuloModal").modal('hide');
+            }
+          });
         }
     },
 

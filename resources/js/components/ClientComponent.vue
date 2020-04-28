@@ -31,12 +31,6 @@
             }
         },
 
-        computed:{
-            countryselect(){
-                return this.screens;
-            }
-        },
-
         methods:{
             getPantallas(id_country)
             {

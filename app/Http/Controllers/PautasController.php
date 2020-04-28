@@ -143,7 +143,11 @@ class PautasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //busco la pauta y la elimino
+        $pauta = Pauta::find($id);
+        $pauta->delete();
+
+        return;
     }
 
     public function listpautas($id)
