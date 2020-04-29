@@ -102,7 +102,7 @@ class PantallaController extends Controller
      */
     public function show($id)
     {
-        //busco el pais
+        //busco el pais1
         $pais = Country::find($id);
 
         //busco las pantallas de ese pais en relacion al usuario que las solicita

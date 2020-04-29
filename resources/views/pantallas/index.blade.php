@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
+<link rel="stylesheet" href="{{ asset('js/aos.css') }}">
     <style>
         @media screen and (min-width: 745px) {
             #circuito{
@@ -55,4 +56,14 @@
             <client-component :user="{{$user}}" :paises="{{$paises}}"></client-component>
 
         <canvas id="canvas" width="800" height="450" style="display:none"></canvas>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/aos.js') }}"></script>
+    <script>
+         AOS.init({
+            duration: 800,
+            easing: "ease-in-out"
+        });
+    </script>
 @endsection

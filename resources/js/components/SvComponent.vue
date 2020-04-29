@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row mt-4" v-if="screns.length > 0">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" v-for="pantalla in searchPantalla" :key="pantalla.id">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" v-for="pantalla in searchPantalla" :key="pantalla.id" data-aos="zoom-in" data-aos-delay="200">
             <div class="card shadow">
                 <img :src="`../storage/${pantalla.image}`" class="card-img-top img-cameras" v-on:click="show(pantalla.id,pantalla.link,pantalla.name)" alt="pantalla.name">
                 <div class="card-body">
