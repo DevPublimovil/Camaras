@@ -6,7 +6,7 @@
             </div>
             <div class="col-lg-8 col-md-8 col-xs-12 col-12 text-center justify-content-center align-items-center mb-4" >
                 <ul class="nav justify-content-center">    
-                    <li class="nav-item" v-for="(pais, index) in paises " :key="pais.id" style="width:15%">
+                    <li class="nav-item" v-for="(pais, index) in paises " :key="index" style="width:15%">
                         <a class="nav-link active" href="#" @click="changecountry(pais.id)"> <img :src="'../'+pais.image" class="img-fluid rounded-circle cameras" :alt="pais.name"></a>
                     </li>
                 </ul>
@@ -19,7 +19,7 @@
                     <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
                     <input type="file" id="capturas_upload" style="display:none" @change="uploadImage()" accept="image/*" multiple>
                 </li>
-                <li class="breadcrumb-item" v-for="(folder, i) in getCurrentPath()" v-on:click="setCurrentPath(i)">
+                <li class="breadcrumb-item" v-for="(folder, i) in getCurrentPath()" :key="i" v-on:click="setCurrentPath(i)">
                     {{ folder }}
                 </li>
             </ol>
@@ -38,11 +38,11 @@
                 </div>
                 <div class="d-flex">
                     <ul id="files">
-                        <li class="items_list" v-for="(file, index) in  searchPantalla" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart">
+                        <li class="items_list" v-for="(file, index) in  searchPantalla" v-on:click="selectFile(file, $event)" :key="index" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart" data-aos="zoom-in" data-aos-delay="200">
                             <div :class="'file_link '+ (isFileSelected(file) ? 'selected' : '')" >
                                 <div class="link_icon" >
                                     <template v-if="fileIs(file, 'image')">
-                                        <img :src="file.path" width="100%" height="auto" :id="index" draggable="true" v-on:dragstart="dragStart">
+                                        <img :data-src="file.path" class="lazyload" width="100%" height="auto" :id="index" draggable="true" v-on:dragstart="dragStart">
                                     </template>
                                     <template v-else-if="fileIs(file, 'folder')">
                                         <i class="icon fa fa-folder" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                     <div class="row" >
                         <div class="col-md-12">
                             <ul class="list-group">
-                                <li class="list-group-item captura_select p-1 m-1" v-for="(item, index) of selectFiles" >
+                                <li class="list-group-item captura_select p-1 m-1" v-for="(item, index) of selectFiles" :key="index">
                                     <div class="row">
                                         <div class="col-11 " v-on:click="selectImage(index)">
                                             {{'Captura '+parseInt(index+1)}} 
@@ -165,6 +165,8 @@
 </template>
 
 <script>
+import AOS from 'aos';
+import 'lazysizes';
 export default {
     props: {
             paises:{
@@ -551,6 +553,7 @@ export default {
         }; 
     },
     created() {
+        AOS.init();
         let datosDB = JSON.parse(localStorage.getItem('capturas-vue'));
         if(datosDB == null){
             this.selectFiles = [];

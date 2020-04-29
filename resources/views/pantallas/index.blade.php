@@ -59,11 +59,11 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/aos.js') }}"></script>
-    <script>
+  {{--   <script src="{{ asset('js/aos.js') }}"></script> --}}
+   {{--  <script>
          AOS.init({
             duration: 800,
             easing: "ease-in-out"
         });
-    </script>
+    </script> --}}
 @endsection

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('styles')
+<link rel="stylesheet" href="{{ asset('js/aos.css') }}">
     <style>
         @media screen and (min-width: 745px) {
             #circuito{

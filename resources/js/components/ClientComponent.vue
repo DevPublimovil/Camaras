@@ -28,10 +28,10 @@
         </div>
     </div>
     <div class="row mt-4" v-if="screens.length > 0">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" v-for="pantalla in searchPantalla" :key="pantalla.id" data-aos="zoom-in" data-aos-delay="200">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" v-for="(pantalla, index) in searchPantalla" :key="index" data-aos="zoom-in" data-aos-delay="200">
             <div class="card shadow">
-                <img :src="`../storage/${pantalla.image}`" class="card-img-top img-cameras" v-on:click="show(pantalla.id,pantalla.link,pantalla.name)" alt="pantalla.name">
-                <div class="card-body">
+                <img :data-src="`../storage/${pantalla.image}`" class="lazyload card-img-top img-cameras" v-on:click="show(pantalla.id,pantalla.link,pantalla.name)" alt="pantalla.name">
+                <div class="card-body" style="height:110px">
                     <div class="row" style="border-left:2px solid #FF3C00">
                         <div class="col-10">
                         <p class="card-text">{{pantalla.name}}</p>
@@ -50,6 +50,7 @@
 
 <script>
 import AOS from 'aos';
+import 'lazysizes';
 import EventBus from '../eventbus.js';
     export default{
         props:['user','paises'],
@@ -73,6 +74,8 @@ import EventBus from '../eventbus.js';
             getPantallas(id_country)
             {
                 let vm = this
+                vm.screens = []
+                vm.name = ''
                 axios.get('/mediacam/clients/' + id_country).then(({data})=>{
                     vm.screens = data
                 })
