@@ -2,7 +2,7 @@
     <div class="clients-screens ">
     <div class="row justify-content-center">
         <div class="d-flex col-lg-4 col-md-4 col-xs-12 col-12 text-center justify-content-center align-items-center" id="circuito" >
-            <h3 class="text-uppercase">Circuito {{selectCountry}}</h3>
+            <h3 class="text-uppercase">Circuito {{countrySelect}}</h3>
         </div>
         <div class="col-lg-8 col-md-8 col-xs-12 col-12 text-center justify-content-center align-items-center" >
             <div v-if="user.role_id == 4">
@@ -67,6 +67,25 @@ import EventBus from '../eventbus.js';
         computed:{
             searchPantalla(){
                return this.screens.filter((pantalla) => pantalla.name.toLowerCase().includes(this.name));
+            },
+            countrySelect(){
+                if(this.selectcountryId == 1){
+                    return "El salvador"
+                }else if(this.selectcountryId == 2){
+                    return "Guatemala"
+                }
+                else if(this.selectcountryId == 3){
+                    return "Costa Rica"
+                }
+                else if(this.selectcountryId == 4){
+                    return "Honduras"
+                }
+                else if(this.selectcountryId == 5){
+                    return "Panama"
+                }
+                else if(this.selectcountryId == 6){
+                    return "Nicaragua"
+                }
             }
         },
 
@@ -76,6 +95,7 @@ import EventBus from '../eventbus.js';
                 let vm = this
                 vm.screens = []
                 vm.name = ''
+                vm.selectcountryId = id_country
                 axios.get('/mediacam/clients/' + id_country).then(({data})=>{
                     vm.screens = data
                 })

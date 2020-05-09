@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 use App\Country;
 use Illuminate\Support\Facades\Mail;
+use App\Hzip;
+use Carbon\Carbon as Fecha;
 
 class MediacamController extends Controller
 {
@@ -67,5 +70,53 @@ class MediacamController extends Controller
     public function logout(Request $request){
         Auth::logout();
         return redirect()->route('inicio');
+    }
+
+    public function downloadBackup(Request $request)
+    {
+        $dir = $request->day;
+        
+       foreach ($dir as $key => $value) {
+            $path = public_path('/storage/el_salvador/' . $value);
+            $namezip = 'backup.zip';
+            $destino = public_path('/storage/uploads/' . $namezip);
+
+            Hzip::zipDir($path, $destino);
+       }
+        
+    
+        return response()->download($destino)->deleteFileAfterSend(true);
+    }
+
+    public function listDays()
+    {
+        $country = Auth::user()->country_id;
+        switch ($country) {
+            case 1:
+                $dir = 'el_salvador';
+                break;
+            case 2:
+                $dir = 'guatemala';
+                break;
+            case 3:
+                $dir = 'costa_rica';
+                break;
+            case 4:
+                $dir = 'honduras';
+                break;
+            case 5:
+                $dir = 'panama';
+                break;
+            case 6:
+                $dir = 'nicaragua';
+                break;
+            
+            default:
+                $dir = 'el_salvador';
+                break;
+        }
+        $directory =  public_path('/storage/' . $dir);
+        $directories = array_slice(scandir($directory), 2);
+        return $directories;
     }
 }

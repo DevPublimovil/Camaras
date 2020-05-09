@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-2">
             <div class="d-flex col-lg-4 col-md-4 col-xs-12 col-12 text-center justify-content-center align-items-center" id="circuito" >
                 <h3 class="text-uppercase">Circuito {{selectCountry}}</h3>
             </div>
@@ -15,6 +15,9 @@
         <nav aria-label="breadcrumb">
             
             <ol class="breadcrumb">
+                <li>
+                    <button class="btn btn-secondary btn-sm mr-2" @click="backup()" data-toggle="modal" data-target="#backup">Backup del día</button>
+                </li>
                 <li>
                     <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
                     <input type="file" id="capturas_upload" style="display:none" @change="uploadImage()" accept="image/*" multiple>
@@ -81,7 +84,7 @@
                     </div>
                     <div class="row mt-2" v-if="selectFiles.length > 0">
                         <div class="col-12">
-                            <button class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#insertDescription">Generara reporte</button>
+                            <button class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#insertDescription">Generar reporte</button>
                             <small class="text-info">Has agregado {{ selectFiles.length }} capturas</small>
                         </div>
                     </div>
@@ -161,12 +164,41 @@
             </div>
         </div>
         <!-- End Image Modal -->
+        <!-- modal backup -->
+        <div class="modal fade" id="backup">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Elegir los dias
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <form action="/mediacam/backup" method="POST" id="formBackup">
+                    <input type="hidden" name="_token" :value="csrf">
+                        <div class="modal-body">
+                            <div class="form-check" v-for="(day, index) in days" :key="index">
+                                <input class="form-check-input" name="day[]" type="checkbox" :value="day" :id="day">
+                                <label class="form-check-label" :for="day">
+                                    {{ day }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer text-center">
+                            <button type="submit" class="btn btn-sm btn-primary" >Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- end modal backup -->
+        
     </div>
 </template>
 
 <script>
 import AOS from 'aos';
 import 'lazysizes';
+import swal from 'sweetalert';
 export default {
     props: {
             paises:{
@@ -265,6 +297,7 @@ export default {
             csrf:'',
             relative_path:'',
             name:'',
+            days: []
         }
     },
 
@@ -503,6 +536,11 @@ export default {
             }
 
             this.getFiles();
+        },
+        backup(){
+            axios.get('/mediacam/backupday').then(({data})=>{
+                this.days = data
+            })
         },
     },
     mounted() {

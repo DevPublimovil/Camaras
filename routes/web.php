@@ -35,6 +35,8 @@ Route::group(['prefix' => 'mediacam'], function () {
         Route::resource('/trafico','TraficoController');
         Route::resource('/apipantallas', 'ApiPantallasController');
         Route::resource('/pautas', 'PautasController');
+        Route::post('/backup', 'MediacamController@downloadBackup')->name('download.backup');
+        Route::get('/backupday', 'MediacamController@listDays')->name('list.daysbackup');
         Route::get('/listpautas/{id}', 'PautasController@listpautas');
         Route::resource('/ventaspublimovil','VentasController');
         Route::get('/medios', 'MediaController@index')->name('medios.index');
