@@ -15,8 +15,8 @@
         <nav aria-label="breadcrumb">
             
             <ol class="breadcrumb">
-                <li>
-                    <button class="btn btn-secondary btn-sm mr-2" @click="backup()" data-toggle="modal" data-target="#backup">Backup del día</button>
+                <li v-if="rol == 4">
+                    <button class="btn btn-secondary btn-sm mr-2" @click="backup()" data-toggle="modal" data-target="#backup">Backup</button>
                 </li>
                 <li>
                     <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
@@ -172,6 +172,7 @@
                         Elegir los dias
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
+                    <p class="text-center mt-4" v-if="days.length == 0">¡No se encontraron archivos para el backup!</p>
                     <form action="/mediacam/backup" method="POST" id="formBackup">
                     <input type="hidden" name="_token" :value="csrf">
                         <div class="modal-body">
@@ -184,7 +185,7 @@
                         </div>
 
                         <div class="modal-footer text-center">
-                            <button type="submit" class="btn btn-sm btn-primary" >Aceptar</button>
+                            <button type="button" @click="generarBackup()" class="btn btn-sm btn-primary" >Aceptar</button>
                         </div>
                     </form>
                 </div>
@@ -206,6 +207,9 @@ export default {
                 default: function() {
                     return [];
                 }
+            },
+            rol:{
+                type: Number,
             },
             countryselect:{
                 type: Number,
@@ -542,6 +546,13 @@ export default {
                 this.days = data
             })
         },
+
+        generarBackup(){
+            toastr.info('¡Espera mientras se comprimen los archivos!')
+            $("#formBackup").submit()
+            $("#backup").modal("hide")
+            $("#formBackup").reset();
+        }
     },
     mounted() {
         this.csrf = document.querySelector('meta[name="csrf-token"]').content
