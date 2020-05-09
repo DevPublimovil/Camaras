@@ -75,9 +75,10 @@ class MediacamController extends Controller
     public function downloadBackup(Request $request)
     {
         $dir = $request->day;
+        $country = $this->myDir();
         
        foreach ($dir as $key => $value) {
-            $path = public_path('/storage/el_salvador/' . $value);
+            $path = public_path('/storage/' . $country . '/' . $value);
             $namezip = 'backup.zip';
             $destino = public_path('/storage/uploads/' . $namezip);
 
@@ -89,6 +90,14 @@ class MediacamController extends Controller
     }
 
     public function listDays()
+    {
+        $dir = $this->myDir();
+        $directory =  public_path('/storage/' . $dir);
+        $directories = array_slice(scandir($directory), 2);
+        return $directories;
+    }
+
+    public function myDir()
     {
         $country = Auth::user()->country_id;
         switch ($country) {
@@ -115,8 +124,7 @@ class MediacamController extends Controller
                 $dir = 'el_salvador';
                 break;
         }
-        $directory =  public_path('/storage/' . $dir);
-        $directories = array_slice(scandir($directory), 2);
-        return $directories;
+
+        return $dir;
     }
 }
