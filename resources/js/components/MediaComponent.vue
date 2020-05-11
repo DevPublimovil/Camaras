@@ -15,7 +15,7 @@
         <nav aria-label="breadcrumb">
             
             <ol class="breadcrumb">
-                <li v-if="rol == 4">
+                <li v-if="rol == 4 || rol == 1">
                     <button class="btn btn-secondary btn-sm mr-2" @click="backup()" data-toggle="modal" data-target="#backup">Backup</button>
                 </li>
                 <li>
