@@ -182,7 +182,7 @@
                                     {{ day }}
                                 </label>
                             </div>-->
-                             <select class="custom-select" id="inputGroupSelect01">
+                             <select name="day" class="custom-select" id="inputGroupSelect01">
                                 <option selected>Seleccione...</option>
                                 <option v-for="(day, index) in days" :key="index" :value="day">{{ day }}</option>
                             </select>
