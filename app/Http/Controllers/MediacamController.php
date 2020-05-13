@@ -93,8 +93,14 @@ class MediacamController extends Controller
     {
         $dir = $this->myDir();
         $directory =  public_path('/storage/' . $dir);
-        $directories = array_slice(scandir($directory), 2);
-        return $directories;
+        $directories = Storage::disk('public')->directories($dir);
+        $files = array();
+        for($i = 0; $i < count($directories); $i++) {
+            $key = explode('/', $directories[$i]);
+            $files [Storage::disk('public')->lastModified($directories[$i])] = $key[1];
+        }
+
+        return $files;
     }
 
     public function myDir()

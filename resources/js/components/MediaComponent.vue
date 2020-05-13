@@ -16,7 +16,7 @@
             
             <ol class="breadcrumb">
                 <li v-if="rol == 4 || rol == 1">
-                    <button class="btn btn-secondary btn-sm mr-2" @click="backup()" data-toggle="modal" data-target="#backup">Backup</button>
+                    <button class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#backup">Backup</button>
                 </li>
                 <li>
                     <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
@@ -169,19 +169,23 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        Elegir los dias
+                        Seleccione un día
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <p class="text-center mt-4" v-if="days.length == 0">¡No se encontraron archivos para el backup!</p>
                     <form action="/mediacam/backup" method="POST" id="formBackup">
                     <input type="hidden" name="_token" :value="csrf">
                         <div class="modal-body">
-                            <div class="form-check" v-for="(day, index) in days" :key="index">
+                            <!--<div class="form-check" v-for="(day, index) in days" :key="index">
                                 <input class="form-check-input" name="day[]" type="checkbox" :value="day" :id="day">
                                 <label class="form-check-label" :for="day">
                                     {{ day }}
                                 </label>
-                            </div>
+                            </div>-->
+                             <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Seleccione...</option>
+                                <option v-for="(day, index) in days" :key="index" :value="day">{{ day }}</option>
+                            </select>
                         </div>
 
                         <div class="modal-footer text-center">
@@ -552,11 +556,12 @@ export default {
             $("#formBackup").submit()
             $("#backup").modal("hide")
             $("#formBackup").reset();
-        }
+        },
     },
     mounted() {
         this.csrf = document.querySelector('meta[name="csrf-token"]').content
         this.getFiles();
+        this.backup();
         var vm = this;
 
         /* window.addEventListener("keypress", e => {
