@@ -555,7 +555,7 @@ export default {
             toastr.info('¡Espera mientras se comprimen los archivos!')
             $("#formBackup").submit()
             $("#backup").modal("hide")
-            $("#formBackup").reset();
+            document.getElementById('formBackup').reset();
         },
     },
     mounted() {

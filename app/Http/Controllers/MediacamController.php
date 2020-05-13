@@ -76,14 +76,14 @@ class MediacamController extends Controller
     {
         $dir = $request->day;
         $country = $this->myDir();
-        
-       foreach ($dir as $key => $value) {
-            $path = public_path('/storage/' . $country . '/' . $value);
-            $namezip = 'backup.zip';
-            $destino = public_path('/storage/uploads/' . $namezip);
+        $path = public_path('/storage/' . $country . '/' . $dir);
+        $last_modified = Storage::disk('public')->lastModified($country . '/' . $dir);
+        $last_modified = Fecha::parse($last_modified)->format('Y_m_d');
+        $namezip = $dir . '_' .$last_modified . '.zip';
 
-            Hzip::zipDir($path, $destino);
-       }
+        $destino = public_path('/storage/uploads/' . $namezip);
+
+        Hzip::zipDir($path, $destino);
         
     
         return response()->download($destino)->deleteFileAfterSend(true);
