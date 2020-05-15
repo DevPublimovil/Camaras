@@ -12,33 +12,36 @@
                 </ul>
             </div>
         </div>
-        <nav aria-label="breadcrumb">
-            
-            <ol class="breadcrumb">
-                <li v-if="rol == 4 || rol == 1">
-                    <button class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#backup">Backup</button>
-                </li>
-                <li>
-                    <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
-                    <input type="file" id="capturas_upload" style="display:none" @change="uploadImage()" accept="image/*" multiple>
-                </li>
-                <li class="breadcrumb-item" v-for="(folder, i) in getCurrentPath()" :key="i" v-on:click="setCurrentPath(i)">
-                    {{ folder }}
-                </li>
-            </ol>
-        </nav>
-        <div class="row">
-            <div class="col-lg-9 col-md-9 col-sm-12">
-                <div class="d-flex bd-highlight">
-                    <div class=" flex-grow-1 bd-highlight">
-                        <input class="form-control" type="search" v-model="name" placeholder="Buscar Pantallas" aria-label="Search">
+        <div class="row shadow-sm p-2">
+            <div class="col-9">
+                <div class="d-flex justify-content-start">
+                    <div class="bd-highlight">
+                        <button class="btn btn-secondary btn-sm mr-2" data-toggle="modal" data-target="#backup">Backup</button>
                     </div>
-                    <div class=" bd-highlight">
+                    <div class="bd-highlight">
+                        <label for="capturas_upload" class="btn btn-primary btn-sm mr-4" style="cursor:pointer">Cargar capturas</label>
+                        <input type="file" id="capturas_upload" style="display:none" @change="uploadImage()" accept="image/*" multiple>
+                    </div>
+                    <div class="bd-highlight current-folder p-1" v-for="(folder, i) in getCurrentPath()" :key="i" v-on:click="setCurrentPath(i)">
+                        <span>{{folder + ' / '}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="d-flex justify-content-end">
+                    <div class="bd-highlight">
+                        <input class="form-control" type="search" v-model="name" placeholder="Buscar" aria-label="Search">
+                    </div>
+                    <div class="ml-2 bd-highlight">
                         <button class="btn btn-search" type="button">
-                            <i class="fa fa-search"></i>
+                            <i class="fa fa-search text-white"></i>
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row mt-4 ">
+            <div class="col-lg-9 col-md-9 col-sm-12">
                 <div class="d-flex">
                     <ul id="files">
                         <li class="items_list" v-for="(file, index) in  searchPantalla" v-on:click="selectFile(file, $event)" :key="index" v-on:dblclick="openFile(file)" v-if="filter(file)" :id="index" draggable="true" v-on:dragstart="dragStart" data-aos="zoom-in" data-aos-delay="200">
@@ -327,6 +330,7 @@ export default {
                 folder: vm.current_folder,
                 country:vm.idcountry
             }).then(({data})=>{
+                this.selectCountry = ''
                 vm.current_folder = data.current_folder
                 this.selectCountry = data.country.name
                 vm.files = [];
@@ -735,8 +739,12 @@ div {
     border: 2px solid #ccc!important;
     min-height:200px;
 }
-.breadcrumb-item{
+.current-folder{
     cursor:pointer
+}
+
+.current-folder:hover{
+    color: #FC876E;
 }
 .fijo-top{
     position:-webkit-sticky;

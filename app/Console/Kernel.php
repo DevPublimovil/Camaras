@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CaptureCamarasHonduras',
         'App\Console\Commands\DeleteCapture',
         'App\Console\Commands\PautasVencidas',
+        'App\Console\Commands\CreateZips',
     ];
 
     /**

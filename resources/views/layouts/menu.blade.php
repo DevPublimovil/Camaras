@@ -45,7 +45,7 @@
             </a>
           </li>
           @endif
-          @if(Auth::user()->hasPermission('browse_photos'))
+          {{-- @if(Auth::user()->hasPermission('browse_photos')) --}}
             <li class="nav-item">
               <a href="{{route('medios.index')}}" class="nav-link">
                 <i class="nav-icon fa fa-file-pdf-o" aria-hidden="true"></i>
@@ -54,7 +54,7 @@
                 </p>
               </a>
             </li>
-            @endif
+           {{--  @endif --}}
           <li class="nav-item">
             <a href="{{route('mediacam.profile')}}" class="nav-link">
               <i class="nav-icon fa fa-user-circle"></i>
