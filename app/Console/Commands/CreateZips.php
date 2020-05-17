@@ -50,7 +50,7 @@ class CreateZips extends Command
         $folders = ['el_salvador','honduras','nicaragua','guatemala'];
 
         //defino el nombre del dia actual
-        $day = Fecha::now()->locale('es')->isoFormat('dddd');
+        $day = Fecha::now()->subDay()->locale('es')->isoFormat('dddd');
 
         //recorro el array de folders
         for($i = 0; $i < count($folders); $i++){
@@ -61,7 +61,7 @@ class CreateZips extends Command
             $origin = public_path('/storage/' . $folder);
 
             //defino un nombre para el zip
-            $namezip = $folders[$i] . '_' . Fecha::now()->format('Y-m-d') . '.zip';
+            $namezip = $folders[$i] . '_' . $day . '.zip';
 
             //defino el destino para el zip
             $destination = public_path('/storage/uploads/' . $namezip);

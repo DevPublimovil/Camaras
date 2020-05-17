@@ -47,5 +47,17 @@
     </style>
 @endsection
 @section('content')
+    <div class="row">
+        <div class="col-12">
+            @if (session('info'))
+                <div class="alert alert-warning">
+                    {{ session('info') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+            @endif
+        </div>
+    </div>
     <media-component :paises="{{$paises}}" :rol="{{Auth::user()->role_id}}" :countryselect="{{Auth::user()->country_id}}"></media-component>
 @endsection

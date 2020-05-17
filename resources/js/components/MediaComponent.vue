@@ -176,8 +176,9 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <p class="text-center mt-4" v-if="days.length == 0">¡No se encontraron archivos para el backup!</p>
-                    <form action="/mediacam/backup" method="POST" id="formBackup">
+                    <form action="/mediacam/backup" method="POST" id="formBackup" v-else>
                     <input type="hidden" name="_token" :value="csrf">
+                    <input type="hidden" name="country" :value="idcountry">
                         <div class="modal-body">
                             <!--<div class="form-check" v-for="(day, index) in days" :key="index">
                                 <input class="form-check-input" name="day[]" type="checkbox" :value="day" :id="day">

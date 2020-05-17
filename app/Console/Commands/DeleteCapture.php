@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 Use App\Country;
 use Storage;
+use File;
 use Illuminate\Support\Facades\Log;
 
 class DeleteCapture extends Command
@@ -44,10 +45,17 @@ class DeleteCapture extends Command
         $countries = Country::get();
         foreach ($countries as $country) {
             $path = str_replace(' ','_',strtolower($country->name)).'/'.$dir;
+            $pathzip = 'uploads/'.str_replace(' ','_',strtolower($country->name)).'_'.$dir.'.zip';
             if(Storage::disk('public')->exists($path)):
                 Storage::disk('public')->deleteDirectory($path);
             else:
                 Log::info('El directorio que intentastes borrar no existe, Dir: ' . $path );
+            endif;
+
+            if(Storage::disk('public')->exists($pathzip)):
+                Storage::disk('public')->delete($pathzip);
+            else:
+                Log::info('El directorio que intentastes borrar no existe, Dir: ' . $pathzip );
             endif;
         }
     }

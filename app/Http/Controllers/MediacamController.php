@@ -75,18 +75,21 @@ class MediacamController extends Controller
     public function downloadBackup(Request $request)
     {
         $dir = $request->day;
-        $country = $this->myDir();
-        $path = public_path('/storage/' . $country . '/' . $dir);
-        $last_modified = Storage::disk('public')->lastModified($country . '/' . $dir);
-        $last_modified = Fecha::parse($last_modified)->format('Y_m_d');
-        $namezip = $dir . '_' .$last_modified . '.zip';
-
-        $destino = public_path('/storage/uploads/' . $namezip);
-
-        Hzip::zipDir($path, $destino);
+        $country = Country::find($request->country);
+        $country = str_replace(' ','_',strtolower($country->name));
+        $path = 'uploads/' . $country. '_' . $dir . '.zip';
+        $exists = Storage::disk('public')->exists($path);
+        if($exists)
+        {
+            return Storage::disk('public')->download($path);
+        }
+        else
+        {
+            return back()->with('info', '¡El backup para el dia que solicitastes aun no esta listo, por favor intentalo mañana!');
+        }
         
     
-        return response()->download($destino)->deleteFileAfterSend(true);
+       //return response()->download($destino)->deleteFileAfterSend(true);
     }
 
     public function listDays()
