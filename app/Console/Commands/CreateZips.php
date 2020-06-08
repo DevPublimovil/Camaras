@@ -15,7 +15,7 @@ class CreateZips extends Command
      *
      * @var string
      */
-    protected $signature = 'make:zip';
+    protected $signature = 'make:zip {day?}';
 
     /**
      * The console command description.
@@ -43,6 +43,7 @@ class CreateZips extends Command
     {
         //extiendo el tiempo de ejecucion
         ini_set("max_execution_time", 3600);
+        $myday = $this->argument('day');
 
         //strtolower(str_replace([' ','.',','],'_',$country->name))
 
@@ -50,7 +51,7 @@ class CreateZips extends Command
         $folders = ['el_salvador','honduras','nicaragua','guatemala'];
 
         //defino el nombre del dia actual
-        $day = Fecha::now()->subDay()->locale('es')->isoFormat('dddd');
+        $day = isset($myday) ? $myday : Fecha::now()->subDay()->locale('es')->isoFormat('dddd');
 
         //recorro el array de folders
         for($i = 0; $i < count($folders); $i++){
